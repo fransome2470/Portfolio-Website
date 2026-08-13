@@ -1,0 +1,2597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Enterprise Risk Register — GRC Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Syne:wght@600;700;800&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg: #0a0c10;
+  --surface: #111318;
+  --surface2: #181c24;
+  --surface3: #1e2330;
+  --border: #252b3a;
+  --border2: #2e3548;
+  --accent: #4f8ef7;
+  --accent2: #7c3aed;
+  --accent3: #06d6a0;
+  --accent4: #f59e0b;
+  --danger: #ef4444;
+  --warning: #f97316;
+  --text: #e8ecf4;
+  --text2: #9aa3b8;
+  --text3: #5c6580;
+  --critical: #ef4444;
+  --high: #f97316;
+  --medium: #f59e0b;
+  --low: #06d6a0;
+  --info: #4f8ef7;
+  --font-display: 'Syne', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--surface); }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+/* ── LAYOUT ── */
+.app { display: flex; min-height: 100vh; }
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: 240px;
+  min-width: 240px;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.sidebar-logo {
+  padding: 20px 18px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.logo-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, var(--accent2), var(--accent));
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.logo-sub {
+  font-size: 10px;
+  color: var(--text3);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  font-family: var(--font-mono);
+}
+
+.sidebar-section {
+  padding: 12px 10px 4px;
+  font-size: 10px;
+  color: var(--text3);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  font-family: var(--font-mono);
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 14px;
+  margin: 1px 6px;
+  border-radius: 7px;
+  cursor: pointer;
+  color: var(--text2);
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.15s;
+  border: none;
+  background: none;
+  width: calc(100% - 12px);
+  text-align: left;
+}
+
+.nav-item:hover { background: var(--surface2); color: var(--text); }
+.nav-item.active { background: rgba(79,142,247,0.12); color: var(--accent); }
+.nav-item .nav-icon { width: 16px; text-align: center; font-size: 14px; }
+
+.sidebar-footer {
+  margin-top: auto;
+  padding: 14px;
+  border-top: 1px solid var(--border);
+}
+
+.owner-card {
+  background: var(--surface2);
+  border-radius: 8px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.owner-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--accent2), var(--accent));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 12px;
+}
+
+.owner-name { font-size: 12px; font-weight: 600; }
+.owner-role { font-size: 10px; color: var(--text3); }
+
+/* ── MAIN ── */
+.main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+/* ── TOPBAR ── */
+.topbar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.topbar-title {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.topbar-controls { display: flex; align-items: center; gap: 10px; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 7px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+  border: none;
+  font-family: var(--font-body);
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+}
+.btn-primary:hover { background: #6ba3f8; }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text2);
+  border: 1px solid var(--border2);
+}
+.btn-ghost:hover { background: var(--surface2); color: var(--text); }
+
+.btn-danger {
+  background: rgba(239,68,68,0.15);
+  color: var(--danger);
+  border: 1px solid rgba(239,68,68,0.3);
+}
+.btn-danger:hover { background: rgba(239,68,68,0.25); }
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 7px 12px;
+  min-width: 240px;
+}
+
+.search-box input {
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--text);
+  font-size: 13px;
+  font-family: var(--font-body);
+  width: 100%;
+}
+
+.search-box input::placeholder { color: var(--text3); }
+
+/* ── CONTENT ── */
+.content { flex: 1; overflow-y: auto; padding: 24px; }
+
+/* ── TABS ── */
+.tabs {
+  display: flex;
+  gap: 2px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 4px;
+  margin-bottom: 24px;
+  width: fit-content;
+}
+
+.tab {
+  padding: 8px 16px;
+  border-radius: 7px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--text2);
+  transition: all 0.15s;
+  border: none;
+  background: none;
+  font-family: var(--font-body);
+}
+
+.tab.active {
+  background: var(--surface3);
+  color: var(--text);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+/* ── METRICS GRID ── */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.metric-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.metric-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+}
+
+.metric-card.critical::before { background: var(--critical); }
+.metric-card.high::before { background: var(--high); }
+.metric-card.medium::before { background: var(--medium); }
+.metric-card.low::before { background: var(--low); }
+.metric-card.info::before { background: var(--info); }
+
+.metric-label { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 1px; font-family: var(--font-mono); margin-bottom: 8px; }
+.metric-value { font-family: var(--font-display); font-size: 28px; font-weight: 800; line-height: 1; margin-bottom: 4px; }
+.metric-card.critical .metric-value { color: var(--critical); }
+.metric-card.high .metric-value { color: var(--high); }
+.metric-card.medium .metric-value { color: var(--medium); }
+.metric-card.low .metric-value { color: var(--low); }
+.metric-card.info .metric-value { color: var(--info); }
+.metric-sub { font-size: 11px; color: var(--text3); }
+
+/* ── HEAT MAP ── */
+.heatmap-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.heatmap-grid {
+  display: grid;
+  grid-template-columns: 60px repeat(5, 1fr);
+  grid-template-rows: repeat(5, 1fr) 30px;
+  gap: 4px;
+  max-width: 520px;
+}
+
+.hm-label {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 8px;
+  font-size: 11px;
+  color: var(--text3);
+  font-family: var(--font-mono);
+}
+
+.hm-label.col {
+  justify-content: center;
+  padding-right: 0;
+  padding-top: 4px;
+}
+
+.hm-cell {
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: var(--font-mono);
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+  min-height: 44px;
+  position: relative;
+}
+
+.hm-cell:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+  z-index: 10;
+}
+
+.hm-low { background: rgba(6,214,160,0.15); color: var(--low); border: 1px solid rgba(6,214,160,0.2); }
+.hm-medium { background: rgba(245,158,11,0.15); color: var(--medium); border: 1px solid rgba(245,158,11,0.2); }
+.hm-high { background: rgba(249,115,22,0.15); color: var(--high); border: 1px solid rgba(249,115,22,0.2); }
+.hm-critical { background: rgba(239,68,68,0.2); color: var(--critical); border: 1px solid rgba(239,68,68,0.3); }
+
+/* ── FILTERS ── */
+.filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.filter-select {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  color: var(--text);
+  font-size: 13px;
+  padding: 7px 10px;
+  outline: none;
+  cursor: pointer;
+  font-family: var(--font-body);
+}
+
+.filter-select:focus { border-color: var(--accent); }
+
+/* ── RISK TABLE ── */
+.table-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.risk-table { width: 100%; border-collapse: collapse; }
+
+.risk-table thead tr {
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+}
+
+.risk-table th {
+  padding: 11px 14px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  font-family: var(--font-mono);
+  cursor: pointer;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.risk-table th:hover { color: var(--text); }
+
+.risk-table tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: background 0.1s;
+  cursor: pointer;
+}
+
+.risk-table tbody tr:last-child { border-bottom: none; }
+.risk-table tbody tr:hover { background: var(--surface2); }
+
+.risk-table td { padding: 12px 14px; font-size: 13px; vertical-align: middle; }
+
+.risk-id {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text3);
+  white-space: nowrap;
+}
+
+.risk-name { font-weight: 500; max-width: 280px; }
+.risk-name-sub { font-size: 11px; color: var(--text3); margin-top: 2px; }
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 9px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: var(--font-mono);
+  white-space: nowrap;
+}
+
+.badge-critical { background: rgba(239,68,68,0.15); color: var(--critical); border: 1px solid rgba(239,68,68,0.25); }
+.badge-high { background: rgba(249,115,22,0.15); color: var(--high); border: 1px solid rgba(249,115,22,0.25); }
+.badge-medium { background: rgba(245,158,11,0.15); color: var(--medium); border: 1px solid rgba(245,158,11,0.25); }
+.badge-low { background: rgba(6,214,160,0.15); color: var(--low); border: 1px solid rgba(6,214,160,0.25); }
+
+.badge-open { background: rgba(79,142,247,0.12); color: var(--info); border: 1px solid rgba(79,142,247,0.2); }
+.badge-mitigated { background: rgba(6,214,160,0.12); color: var(--low); border: 1px solid rgba(6,214,160,0.2); }
+.badge-accepted { background: rgba(124,58,237,0.12); color: #a78bfa; border: 1px solid rgba(124,58,237,0.2); }
+.badge-transferred { background: rgba(245,158,11,0.12); color: var(--medium); border: 1px solid rgba(245,158,11,0.2); }
+.badge-closed { background: rgba(92,101,128,0.2); color: var(--text3); border: 1px solid var(--border); }
+
+.score-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.score-1, .score-2 { background: rgba(6,214,160,0.15); color: var(--low); }
+.score-3, .score-4 { background: rgba(245,158,11,0.15); color: var(--medium); }
+.score-6, .score-8, .score-9 { background: rgba(249,115,22,0.15); color: var(--high); }
+.score-12, .score-15, .score-16, .score-20, .score-25 { background: rgba(239,68,68,0.15); color: var(--critical); }
+
+.trend-up { color: var(--danger); font-size: 12px; }
+.trend-down { color: var(--low); font-size: 12px; }
+.trend-flat { color: var(--text3); font-size: 12px; }
+
+.framework-tags { display: flex; gap: 4px; flex-wrap: wrap; }
+.framework-tag {
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  background: var(--surface3);
+  color: var(--text2);
+  border: 1px solid var(--border2);
+}
+
+/* ── PAGINATION ── */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text3);
+}
+
+.page-btns { display: flex; gap: 4px; }
+.page-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 12px;
+  border: 1px solid var(--border);
+  background: none;
+  color: var(--text2);
+  transition: all 0.15s;
+}
+.page-btn:hover, .page-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+/* ── MODAL ── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal-overlay.open { display: flex; }
+
+.modal {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 14px;
+  width: 100%;
+  max-width: 780px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+}
+
+.modal-header {
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  position: sticky;
+  top: 0;
+  background: var(--surface);
+  z-index: 10;
+}
+
+.modal-title { font-family: var(--font-display); font-size: 17px; font-weight: 700; }
+.modal-close {
+  width: 30px; height: 30px;
+  border-radius: 7px;
+  border: 1px solid var(--border);
+  background: none;
+  color: var(--text2);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+  transition: all 0.15s;
+}
+.modal-close:hover { background: var(--surface2); color: var(--text); }
+
+.modal-body { padding: 20px 24px; }
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.detail-item {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.detail-item-label {
+  font-size: 10px;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-family: var(--font-mono);
+  margin-bottom: 6px;
+}
+
+.detail-item-value { font-size: 14px; font-weight: 500; }
+
+.section-sub-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text2);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-family: var(--font-mono);
+  margin-bottom: 10px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.timeline-item {
+  display: flex;
+  gap: 12px;
+  padding-bottom: 16px;
+  position: relative;
+}
+
+.timeline-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 15px;
+  top: 32px;
+  bottom: 0;
+  width: 1px;
+  background: var(--border);
+}
+
+.timeline-dot {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--surface2);
+  border: 2px solid var(--border2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+.timeline-content { flex: 1; }
+.timeline-date { font-size: 11px; color: var(--text3); font-family: var(--font-mono); margin-bottom: 3px; }
+.timeline-text { font-size: 13px; }
+
+.control-list { display: flex; flex-direction: column; gap: 8px; }
+.control-item {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.control-status {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-top: 5px;
+  flex-shrink: 0;
+}
+
+.control-status.implemented { background: var(--low); box-shadow: 0 0 6px var(--low); }
+.control-status.in-progress { background: var(--medium); box-shadow: 0 0 6px var(--medium); }
+.control-status.planned { background: var(--text3); }
+
+.control-name { font-size: 13px; font-weight: 500; margin-bottom: 3px; }
+.control-meta { font-size: 11px; color: var(--text3); }
+
+/* ── ADD RISK FORM ── */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-group.full { grid-column: 1 / -1; }
+.form-label { font-size: 11px; color: var(--text2); text-transform: uppercase; letter-spacing: 0.8px; font-family: var(--font-mono); }
+.form-input, .form-select, .form-textarea {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  color: var(--text);
+  font-size: 13px;
+  padding: 9px 12px;
+  outline: none;
+  font-family: var(--font-body);
+  transition: border-color 0.15s;
+}
+.form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--accent); }
+.form-textarea { resize: vertical; min-height: 80px; }
+
+.score-display {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px;
+  text-align: center;
+  margin-top: 8px;
+}
+
+.score-display-value {
+  font-family: var(--font-display);
+  font-size: 42px;
+  font-weight: 800;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.score-display-label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 1px; font-family: var(--font-mono); }
+
+/* ── RISK GUIDE TAB ── */
+.guide-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+
+.guide-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.guide-card-title {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.matrix-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.matrix-table th, .matrix-table td { padding: 8px 10px; border: 1px solid var(--border); text-align: left; }
+.matrix-table th { background: var(--surface2); color: var(--text2); font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px; }
+
+.rating-bar { height: 6px; border-radius: 3px; margin-top: 6px; }
+
+/* ── CHARTS SECTION ── */
+.charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+
+.chart-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.bar-chart { display: flex; flex-direction: column; gap: 10px; }
+
+.bar-row { display: flex; align-items: center; gap: 10px; }
+.bar-label { font-size: 12px; color: var(--text2); min-width: 120px; }
+.bar-track { flex: 1; background: var(--surface2); border-radius: 4px; height: 20px; overflow: hidden; position: relative; }
+.bar-fill { height: 100%; border-radius: 4px; display: flex; align-items: center; padding-left: 8px; font-size: 11px; font-weight: 600; font-family: var(--font-mono); transition: width 0.6s ease; }
+.bar-value { font-size: 12px; color: var(--text2); min-width: 30px; text-align: right; }
+
+.donut-wrap { display: flex; align-items: center; gap: 20px; }
+.donut-legend { display: flex; flex-direction: column; gap: 8px; }
+.legend-item { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+.legend-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+
+/* ── OVERVIEW PANELS ── */
+.two-col { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-bottom: 24px; }
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.recent-list { display: flex; flex-direction: column; gap: 0; }
+.recent-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+.recent-item:last-child { border-bottom: none; }
+.recent-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.recent-info { flex: 1; }
+.recent-name { font-size: 13px; font-weight: 500; }
+.recent-meta { font-size: 11px; color: var(--text3); }
+.recent-score { font-family: var(--font-mono); font-size: 13px; font-weight: 600; }
+
+.activity-list { display: flex; flex-direction: column; gap: 12px; }
+.activity-item { display: flex; gap: 10px; align-items: flex-start; }
+.activity-icon { width: 28px; height: 28px; border-radius: 7px; background: var(--surface2); display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; }
+.activity-text { font-size: 12px; color: var(--text2); line-height: 1.5; }
+.activity-time { font-size: 10px; color: var(--text3); margin-top: 2px; font-family: var(--font-mono); }
+
+/* ── HIDE/SHOW TABS ── */
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* ── TOAST ── */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  transform: translateY(80px);
+  opacity: 0;
+  transition: all 0.3s ease;
+  z-index: 2000;
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+
+/* ── PRINT ── */
+@media print {
+  .sidebar, .topbar-controls, .filters .btn, .pagination { display: none; }
+  .main { overflow: visible; }
+  .content { overflow: visible; padding: 0; }
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1200px) {
+  .metrics-grid { grid-template-columns: repeat(3, 1fr); }
+  .two-col { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 900px) {
+  .sidebar { display: none; }
+  .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+  .guide-grid, .charts-grid { grid-template-columns: 1fr; }
+  .detail-grid { grid-template-columns: 1fr 1fr; }
+  .form-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-badge">🛡️ RiskVault</div>
+    <div class="logo-sub">Enterprise GRC Platform</div>
+  </div>
+
+  <div class="sidebar-section">Main</div>
+  <button class="nav-item active" onclick="switchNav(this,'dashboard')">
+    <span class="nav-icon">📊</span> Dashboard
+  </button>
+  <button class="nav-item" onclick="switchNav(this,'register')">
+    <span class="nav-icon">📋</span> Risk Register
+  </button>
+  <button class="nav-item" onclick="switchNav(this,'heatmap')">
+    <span class="nav-icon">🔥</span> Risk Heatmap
+  </button>
+  <button class="nav-item" onclick="switchNav(this,'guide')">
+    <span class="nav-icon">📖</span> Risk Guide
+  </button>
+
+  <div class="sidebar-section">Frameworks</div>
+  <button class="nav-item" onclick="switchNav(this,'register')">
+    <span class="nav-icon">🏛️</span> ISO 27001
+  </button>
+  <button class="nav-item" onclick="switchNav(this,'register')">
+    <span class="nav-icon">✅</span> SOC 2
+  </button>
+  <button class="nav-item" onclick="switchNav(this,'register')">
+    <span class="nav-icon">🇪🇺</span> GDPR
+  </button>
+  <button class="nav-item" onclick="switchNav(this,'register')">
+    <span class="nav-icon">🌐</span> NIST CSF
+  </button>
+
+  <div class="sidebar-footer">
+    <div class="owner-card">
+      <div class="owner-avatar">JB</div>
+      <div>
+        <div class="owner-name">Johnbosco Okonkwo</div>
+        <div class="owner-role">CISSP · Risk Lead</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-title" id="page-title">📊 Dashboard</div>
+    <div class="topbar-controls">
+      <div class="search-box">
+        <span style="color:var(--text3)">🔍</span>
+        <input type="text" placeholder="Search risks, controls, owners…" id="search-input" oninput="filterRisks()"/>
+      </div>
+      <button class="btn btn-ghost" onclick="exportCSV()">⬇ Export</button>
+      <button class="btn btn-primary" onclick="openGoogleSheet()">+ Add Risk</button>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- ══ DASHBOARD TAB ══ -->
+    <div class="tab-content active" id="tab-dashboard">
+
+      <div class="metrics-grid">
+        <div class="metric-card critical">
+          <div class="metric-label">Critical Risks</div>
+          <div class="metric-value" id="m-critical">0</div>
+          <div class="metric-sub">Immediate action required</div>
+        </div>
+        <div class="metric-card high">
+          <div class="metric-label">High Risks</div>
+          <div class="metric-value" id="m-high">0</div>
+          <div class="metric-sub">Review within 30 days</div>
+        </div>
+        <div class="metric-card medium">
+          <div class="metric-label">Medium Risks</div>
+          <div class="metric-value" id="m-medium">0</div>
+          <div class="metric-sub">Monitor monthly</div>
+        </div>
+        <div class="metric-card low">
+          <div class="metric-label">Low Risks</div>
+          <div class="metric-value" id="m-low">0</div>
+          <div class="metric-sub">Annual review</div>
+        </div>
+        <div class="metric-card info">
+          <div class="metric-label">Total Risks</div>
+          <div class="metric-value" id="m-total">0</div>
+          <div class="metric-sub">Across all domains</div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="panel">
+          <div class="section-title">🔴 Highest Priority Risks</div>
+          <div class="recent-list" id="top-risks-list"></div>
+        </div>
+        <div class="panel">
+          <div class="section-title">🕐 Recent Activity</div>
+          <div class="activity-list">
+            <div class="activity-item">
+              <div class="activity-icon">➕</div>
+              <div>
+                <div class="activity-text">New critical risk added: Cloud misconfiguration</div>
+                <div class="activity-time">2 hours ago</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-icon">✏️</div>
+              <div>
+                <div class="activity-text">Risk score updated: Third-party vendor access (16→12)</div>
+                <div class="activity-time">Yesterday, 14:22</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-icon">✅</div>
+              <div>
+                <div class="activity-text">Control implemented: MFA enforced on all admin accounts</div>
+                <div class="activity-time">2 days ago</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-icon">📋</div>
+              <div>
+                <div class="activity-text">SOC 2 audit evidence package submitted</div>
+                <div class="activity-time">3 days ago</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-icon">🔔</div>
+              <div>
+                <div class="activity-text">Risk review reminder: 4 risks due this week</div>
+                <div class="activity-time">4 days ago</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="charts-grid">
+        <div class="chart-card">
+          <div class="section-title">📈 Risks by Domain</div>
+          <div class="bar-chart" id="domain-chart"></div>
+        </div>
+        <div class="chart-card">
+          <div class="section-title">🔄 Treatment Status</div>
+          <div class="donut-wrap">
+            <svg width="120" height="120" viewBox="0 0 42 42" id="donut-svg">
+              <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="var(--surface2)" stroke-width="6"/>
+              <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="var(--accent)" stroke-width="6"
+                stroke-dasharray="35 65" stroke-dashoffset="25" id="d1"/>
+              <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="var(--low)" stroke-width="6"
+                stroke-dasharray="30 70" stroke-dashoffset="-10" id="d2"/>
+              <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="var(--medium)" stroke-width="6"
+                stroke-dasharray="20 80" stroke-dashoffset="-40" id="d3"/>
+              <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#a78bfa" stroke-width="6"
+                stroke-dasharray="15 85" stroke-dashoffset="-60" id="d4"/>
+            </svg>
+            <div class="donut-legend" id="donut-legend"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ══ REGISTER TAB ══ -->
+    <div class="tab-content" id="tab-register">
+
+      <div class="filters">
+        <select class="filter-select" id="filter-severity" onchange="filterRisks()">
+          <option value="">All Severities</option>
+          <option value="Critical">Critical</option>
+          <option value="High">High</option>
+          <option value="Medium">Medium</option>
+          <option value="Low">Low</option>
+        </select>
+        <select class="filter-select" id="filter-domain" onchange="filterRisks()">
+          <option value="">All Domains</option>
+          <option value="Information Security">Information Security</option>
+          <option value="Cloud & Infrastructure">Cloud & Infrastructure</option>
+          <option value="Third Party">Third Party</option>
+          <option value="Compliance & Legal">Compliance & Legal</option>
+          <option value="Operational">Operational</option>
+          <option value="Human Resources">Human Resources</option>
+        </select>
+        <select class="filter-select" id="filter-status" onchange="filterRisks()">
+          <option value="">All Statuses</option>
+          <option value="Open">Open</option>
+          <option value="Mitigated">Mitigated</option>
+          <option value="Accepted">Accepted</option>
+          <option value="Transferred">Transferred</option>
+          <option value="Closed">Closed</option>
+        </select>
+        <select class="filter-select" id="filter-framework" onchange="filterRisks()">
+          <option value="">All Frameworks</option>
+          <option value="ISO 27001">ISO 27001</option>
+          <option value="SOC 2">SOC 2</option>
+          <option value="GDPR">GDPR</option>
+          <option value="NIST CSF">NIST CSF</option>
+        </select>
+        <button class="btn btn-ghost" onclick="clearFilters()">✕ Clear</button>
+      </div>
+
+      <div class="table-wrap">
+        <table class="risk-table">
+          <thead>
+            <tr>
+              <th onclick="sortTable('id')">ID ↕</th>
+              <th onclick="sortTable('name')">Risk Name ↕</th>
+              <th onclick="sortTable('domain')">Domain ↕</th>
+              <th onclick="sortTable('severity')">Severity ↕</th>
+              <th onclick="sortTable('likelihood')">L</th>
+              <th onclick="sortTable('impact')">I</th>
+              <th onclick="sortTable('score')">Score ↕</th>
+              <th onclick="sortTable('residualScore')">Residual ↕</th>
+              <th>Trend</th>
+              <th>Status ↕</th>
+              <th>Owner</th>
+              <th>Frameworks</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="risk-tbody"></tbody>
+        </table>
+        <div class="pagination">
+          <span id="page-info">Showing 0 of 0 risks</span>
+          <div class="page-btns" id="page-btns"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ HEATMAP TAB ══ -->
+    <div class="tab-content" id="tab-heatmap">
+      <div class="heatmap-section">
+        <div class="section-title">🔥 Risk Heatmap — Likelihood × Impact</div>
+        <div style="display:flex;gap:40px;flex-wrap:wrap;">
+          <div>
+            <div class="heatmap-grid" id="heatmap-grid"></div>
+            <div style="margin-top:12px;display:flex;gap:16px;font-size:11px;font-family:var(--font-mono);">
+              <span style="color:var(--low)">■ Low (1–4)</span>
+              <span style="color:var(--medium)">■ Medium (5–9)</span>
+              <span style="color:var(--high)">■ High (10–16)</span>
+              <span style="color:var(--critical)">■ Critical (17–25)</span>
+            </div>
+          </div>
+          <div style="flex:1;min-width:240px;">
+            <div class="section-title">Risks in Selected Cell</div>
+            <div id="heatmap-detail" style="color:var(--text3);font-size:13px;">Click a cell to see risks</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ GUIDE TAB ══ -->
+    <div class="tab-content" id="tab-guide">
+
+      <div style="background:linear-gradient(135deg,rgba(79,142,247,0.1),rgba(124,58,237,0.1));border:1px solid rgba(79,142,247,0.2);border-radius:12px;padding:20px;margin-bottom:24px;">
+        <div style="font-family:var(--font-display);font-size:20px;font-weight:800;margin-bottom:8px;">📖 Enterprise Risk Management Guide</div>
+        <div style="color:var(--text2);font-size:13px;line-height:1.7;">A comprehensive reference guide aligned to ISO 27001:2022, NIST CSF 2.0, and SOC 2 Trust Service Criteria. This guide documents the risk methodology, scoring matrices, treatment strategies, and governance framework applied in this risk register.</div>
+        <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;">
+          <span class="framework-tag">ISO 27001:2022</span>
+          <span class="framework-tag">NIST CSF 2.0</span>
+          <span class="framework-tag">SOC 2 TSC</span>
+          <span class="framework-tag">GDPR Art.32</span>
+          <span class="framework-tag">NCSC Cyber Essentials</span>
+        </div>
+      </div>
+
+      <div class="guide-grid">
+
+        <div class="guide-card">
+          <div class="guide-card-title">📐 Risk Scoring Matrix (5×5)</div>
+          <table class="matrix-table">
+            <thead>
+              <tr>
+                <th>Likelihood \ Impact</th>
+                <th style="color:var(--low)">1-Minimal</th>
+                <th style="color:var(--medium)">2-Minor</th>
+                <th style="color:var(--medium)">3-Moderate</th>
+                <th style="color:var(--high)">4-Major</th>
+                <th style="color:var(--critical)">5-Catastrophic</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td style="color:var(--text2);font-family:var(--font-mono);font-size:11px;">5-Almost Certain</td><td class="hm-medium">5</td><td class="hm-high">10</td><td class="hm-critical">15</td><td class="hm-critical">20</td><td class="hm-critical">25</td></tr>
+              <tr><td style="color:var(--text2);font-family:var(--font-mono);font-size:11px;">4-Likely</td><td class="hm-low">4</td><td class="hm-medium">8</td><td class="hm-high">12</td><td class="hm-high">16</td><td class="hm-critical">20</td></tr>
+              <tr><td style="color:var(--text2);font-family:var(--font-mono);font-size:11px;">3-Possible</td><td class="hm-low">3</td><td class="hm-medium">6</td><td class="hm-medium">9</td><td class="hm-high">12</td><td class="hm-high">15</td></tr>
+              <tr><td style="color:var(--text2);font-family:var(--font-mono);font-size:11px;">2-Unlikely</td><td class="hm-low">2</td><td class="hm-low">4</td><td class="hm-medium">6</td><td class="hm-medium">8</td><td class="hm-high">10</td></tr>
+              <tr><td style="color:var(--text2);font-family:var(--font-mono);font-size:11px;">1-Rare</td><td class="hm-low">1</td><td class="hm-low">2</td><td class="hm-low">3</td><td class="hm-low">4</td><td class="hm-medium">5</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="guide-card">
+          <div class="guide-card-title">🎯 Severity Thresholds & Response SLAs</div>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div style="background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);border-radius:8px;padding:12px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                <span class="badge badge-critical">● CRITICAL</span>
+                <span style="font-family:var(--font-mono);font-size:11px;color:var(--text3);">Score 17–25</span>
+              </div>
+              <div style="font-size:12px;color:var(--text2);">Immediate escalation to CISO & Board. Treatment plan within <strong>24 hours</strong>. Weekly tracking.</div>
+            </div>
+            <div style="background:rgba(249,115,22,0.08);border:1px solid rgba(249,115,22,0.2);border-radius:8px;padding:12px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                <span class="badge badge-high">● HIGH</span>
+                <span style="font-family:var(--font-mono);font-size:11px;color:var(--text3);">Score 10–16</span>
+              </div>
+              <div style="font-size:12px;color:var(--text2);">Escalate to Risk Owner. Treatment plan within <strong>7 days</strong>. Bi-weekly review.</div>
+            </div>
+            <div style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);border-radius:8px;padding:12px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                <span class="badge badge-medium">● MEDIUM</span>
+                <span style="font-family:var(--font-mono);font-size:11px;color:var(--text3);">Score 5–9</span>
+              </div>
+              <div style="font-size:12px;color:var(--text2);">Assign to domain owner. Mitigation within <strong>30 days</strong>. Monthly review.</div>
+            </div>
+            <div style="background:rgba(6,214,160,0.08);border:1px solid rgba(6,214,160,0.2);border-radius:8px;padding:12px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                <span class="badge badge-low">● LOW</span>
+                <span style="font-family:var(--font-mono);font-size:11px;color:var(--text3);">Score 1–4</span>
+              </div>
+              <div style="font-size:12px;color:var(--text2);">Document and monitor. Review <strong>quarterly</strong>. Accept if cost of mitigation exceeds exposure.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="guide-card">
+          <div class="guide-card-title">🔄 Risk Treatment Options</div>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div style="background:var(--surface2);border-radius:8px;padding:12px;">
+              <div style="font-weight:600;font-size:13px;margin-bottom:4px;">🛡️ Mitigate (Reduce)</div>
+              <div style="font-size:12px;color:var(--text2);">Implement controls to reduce likelihood or impact. Primary option for Critical/High risks. Document control effectiveness and residual risk.</div>
+            </div>
+            <div style="background:var(--surface2);border-radius:8px;padding:12px;">
+              <div style="font-weight:600;font-size:13px;margin-bottom:4px;">📋 Accept</div>
+              <div style="font-size:12px;color:var(--text2);">Formally accept risk within risk appetite. Requires written sign-off from risk owner. Only applicable to Low/Medium risks.</div>
+            </div>
+            <div style="background:var(--surface2);border-radius:8px;padding:12px;">
+              <div style="font-weight:600;font-size:13px;margin-bottom:4px;">🔀 Transfer</div>
+              <div style="font-size:12px;color:var(--text2);">Transfer financial exposure via cyber insurance or contractual clauses. Does not eliminate the risk — residual risk remains.</div>
+            </div>
+            <div style="background:var(--surface2);border-radius:8px;padding:12px;">
+              <div style="font-weight:600;font-size:13px;margin-bottom:4px;">🚫 Avoid</div>
+              <div style="font-size:12px;color:var(--text2);">Eliminate the activity that generates the risk. Appropriate when the risk cannot be reduced to an acceptable level.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="guide-card">
+          <div class="guide-card-title">📏 Likelihood Scale</div>
+          <table class="matrix-table">
+            <thead><tr><th>Score</th><th>Rating</th><th>Frequency</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td style="color:var(--critical);font-weight:700;">5</td><td>Almost Certain</td><td>&gt;90%</td><td>Expected to occur in most circumstances</td></tr>
+              <tr><td style="color:var(--high);font-weight:700;">4</td><td>Likely</td><td>50–90%</td><td>Will probably occur in most circumstances</td></tr>
+              <tr><td style="color:var(--medium);font-weight:700;">3</td><td>Possible</td><td>20–50%</td><td>Might occur at some time</td></tr>
+              <tr><td style="color:var(--low);font-weight:700;">2</td><td>Unlikely</td><td>5–20%</td><td>Could occur but not expected</td></tr>
+              <tr><td style="color:var(--info);font-weight:700;">1</td><td>Rare</td><td>&lt;5%</td><td>May occur only in exceptional circumstances</td></tr>
+            </tbody>
+          </table>
+          <div style="margin-top:16px;">
+          <div class="guide-card-title" style="margin-top:0;">💥 Impact Scale</div>
+          <table class="matrix-table">
+            <thead><tr><th>Score</th><th>Rating</th><th>Financial</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td style="color:var(--critical);font-weight:700;">5</td><td>Catastrophic</td><td>&gt;£1M</td><td>Business continuity threatened, regulatory sanction</td></tr>
+              <tr><td style="color:var(--high);font-weight:700;">4</td><td>Major</td><td>£100K–£1M</td><td>Significant operational disruption, reputational damage</td></tr>
+              <tr><td style="color:var(--medium);font-weight:700;">3</td><td>Moderate</td><td>£10K–£100K</td><td>Moderate disruption, recoverable within days</td></tr>
+              <tr><td style="color:var(--low);font-weight:700;">2</td><td>Minor</td><td>£1K–£10K</td><td>Minor disruption, recoverable within hours</td></tr>
+              <tr><td style="color:var(--info);font-weight:700;">1</td><td>Minimal</td><td>&lt;£1K</td><td>Negligible impact, no operational disruption</td></tr>
+            </tbody>
+          </table>
+          </div>
+        </div>
+
+        <div class="guide-card" style="grid-column:1/-1;">
+          <div class="guide-card-title">🏛️ Framework Control Mapping</div>
+          <table class="matrix-table">
+            <thead>
+              <tr>
+                <th>Risk Domain</th>
+                <th>ISO 27001:2022 Controls</th>
+                <th>SOC 2 TSC</th>
+                <th>NIST CSF 2.0</th>
+                <th>GDPR Article</th>
+                <th>NCSC Cyber Essentials</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Access Control</td><td>A.5.15, A.5.16, A.5.17, A.5.18</td><td>CC6.1, CC6.2, CC6.3</td><td>PR.AA-01, PR.AA-02</td><td>Art. 25, 32</td><td>User Access Control</td></tr>
+              <tr><td>Cryptography</td><td>A.8.24, A.8.25</td><td>CC6.7</td><td>PR.DS-01, PR.DS-02</td><td>Art. 32(1)(a)</td><td>N/A</td></tr>
+              <tr><td>Incident Management</td><td>A.5.24, A.5.25, A.5.26</td><td>CC7.3, CC7.4, CC7.5</td><td>RS.MA-01, RS.AN-01</td><td>Art. 33, 34</td><td>N/A</td></tr>
+              <tr><td>Third Party / Supply Chain</td><td>A.5.19, A.5.20, A.5.21, A.5.22</td><td>CC9.2</td><td>GV.SC-01 to SC-10</td><td>Art. 28, 29</td><td>N/A</td></tr>
+              <tr><td>Network Security</td><td>A.8.20, A.8.21, A.8.22</td><td>CC6.6</td><td>PR.IR-01, PR.IR-02</td><td>Art. 32(1)(b)</td><td>Boundary Firewalls, Network Devices</td></tr>
+              <tr><td>Vulnerability Management</td><td>A.8.8</td><td>CC7.1</td><td>ID.RA-01, ID.RA-05</td><td>Art. 32</td><td>Patch Management, Malware Protection</td></tr>
+              <tr><td>Business Continuity</td><td>A.5.29, A.5.30, A.8.14</td><td>A1.2, A1.3</td><td>RC.RP-01, RC.CO-03</td><td>Art. 32(1)(c)</td><td>N/A</td></tr>
+              <tr><td>Data Protection</td><td>A.8.10, A.8.11, A.8.12</td><td>CC6.5, P1–P8</td><td>PR.DS-05, PR.DS-10</td><td>Art. 5, 17, 25</td><td>N/A</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="guide-card">
+          <div class="guide-card-title">🏢 Risk Governance Structure</div>
+          <div style="display:flex;flex-direction:column;gap:8px;font-size:13px;">
+            <div style="background:rgba(239,68,68,0.08);border-left:3px solid var(--critical);padding:10px 12px;border-radius:0 7px 7px 0;">
+              <div style="font-weight:600;margin-bottom:3px;">Board / Audit Committee</div>
+              <div style="color:var(--text2);font-size:12px;">Risk appetite setting, critical risk sign-off, regulatory accountability</div>
+            </div>
+            <div style="background:rgba(249,115,22,0.08);border-left:3px solid var(--high);padding:10px 12px;border-radius:0 7px 7px 0;">
+              <div style="font-weight:600;margin-bottom:3px;">CISO / Risk Committee</div>
+              <div style="color:var(--text2);font-size:12px;">Risk strategy, policy, High/Critical risk decisions, quarterly reporting</div>
+            </div>
+            <div style="background:rgba(245,158,11,0.08);border-left:3px solid var(--medium);padding:10px 12px;border-radius:0 7px 7px 0;">
+              <div style="font-weight:600;margin-bottom:3px;">Risk Owners (Domain Heads)</div>
+              <div style="color:var(--text2);font-size:12px;">Control implementation, residual risk acceptance, monthly updates</div>
+            </div>
+            <div style="background:rgba(6,214,160,0.08);border-left:3px solid var(--low);padding:10px 12px;border-radius:0 7px 7px 0;">
+              <div style="font-weight:600;margin-bottom:3px;">GRC Analyst (Risk Lead)</div>
+              <div style="color:var(--text2);font-size:12px;">Register maintenance, scoring, evidence collection, framework mapping</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="guide-card">
+          <div class="guide-card-title">📅 Risk Review Calendar</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="background:var(--surface2);border-radius:8px;padding:12px;display:flex;gap:12px;align-items:center;">
+              <div style="font-family:var(--font-display);font-size:24px;font-weight:800;color:var(--critical);min-width:40px;text-align:center;">D</div>
+              <div><div style="font-weight:600;font-size:13px;">Daily</div><div style="font-size:12px;color:var(--text2);">Critical risk monitoring, incident linkage, threat intel review</div></div>
+            </div>
+            <div style="background:var(--surface2);border-radius:8px;padding:12px;display:flex;gap:12px;align-items:center;">
+              <div style="font-family:var(--font-display);font-size:24px;font-weight:800;color:var(--high);min-width:40px;text-align:center;">W</div>
+              <div><div style="font-weight:600;font-size:13px;">Weekly</div><div style="font-size:12px;color:var(--text2);">High risk treatment tracking, control testing, owner check-ins</div></div>
+            </div>
+            <div style="background:var(--surface2);border-radius:8px;padding:12px;display:flex;gap:12px;align-items:center;">
+              <div style="font-family:var(--font-display);font-size:24px;font-weight:800;color:var(--medium);min-width:40px;text-align:center;">M</div>
+              <div><div style="font-weight:600;font-size:13px;">Monthly</div><div style="font-size:12px;color:var(--text2);">Full register review, score updates, management reporting</div></div>
+            </div>
+            <div style="background:var(--surface2);border-radius:8px;padding:12px;display:flex;gap:12px;align-items:center;">
+              <div style="font-family:var(--font-display);font-size:24px;font-weight:800;color:var(--low);min-width:40px;text-align:center;">Q</div>
+              <div><div style="font-weight:600;font-size:13px;">Quarterly</div><div style="font-size:12px;color:var(--text2);">Risk appetite review, board reporting, framework reassessment</div></div>
+            </div>
+            <div style="background:var(--surface2);border-radius:8px;padding:12px;display:flex;gap:12px;align-items:center;">
+              <div style="font-family:var(--font-display);font-size:24px;font-weight:800;color:var(--info);min-width:40px;text-align:center;">A</div>
+              <div><div style="font-weight:600;font-size:13px;">Annual</div><div style="font-size:12px;color:var(--text2);">Full risk assessment, external audit, ISO 27001 surveillance audit</div></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<!-- ADD RISK MODAL -->
+<div class="modal-overlay" id="add-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">➕ Add New Risk</div>
+        <div style="font-size:12px;color:var(--text3);margin-top:4px;">All fields are required for complete risk documentation</div>
+      </div>
+      <button class="modal-close" onclick="closeModal('add-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">Risk Name</label>
+          <input class="form-input" id="f-name" placeholder="e.g. Unauthorised data access via API"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Domain</label>
+          <select class="form-select" id="f-domain">
+            <option>Information Security</option>
+            <option>Cloud & Infrastructure</option>
+            <option>Third Party</option>
+            <option>Compliance & Legal</option>
+            <option>Operational</option>
+            <option>Human Resources</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Risk Description</label>
+          <textarea class="form-textarea" id="f-desc" placeholder="Describe the risk scenario, threat source, and potential impact in detail…"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Likelihood (1–5)</label>
+          <select class="form-select" id="f-likelihood" onchange="calcScore()">
+            <option value="1">1 – Rare (&lt;5%)</option>
+            <option value="2">2 – Unlikely (5–20%)</option>
+            <option value="3" selected>3 – Possible (20–50%)</option>
+            <option value="4">4 – Likely (50–90%)</option>
+            <option value="5">5 – Almost Certain (&gt;90%)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Impact (1–5)</label>
+          <select class="form-select" id="f-impact" onchange="calcScore()">
+            <option value="1">1 – Minimal (&lt;£1K)</option>
+            <option value="2">2 – Minor (£1K–£10K)</option>
+            <option value="3" selected>3 – Moderate (£10K–£100K)</option>
+            <option value="4">4 – Major (£100K–£1M)</option>
+            <option value="5">5 – Catastrophic (&gt;£1M)</option>
+          </select>
+        </div>
+        <div class="form-group" style="grid-column:1/-1;">
+          <div class="score-display">
+            <div class="score-display-value" id="score-preview" style="color:var(--medium)">9</div>
+            <div class="score-display-label">Inherent Risk Score · <span id="severity-preview">Medium</span></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Risk Owner</label>
+          <select class="form-select" id="f-owner">
+            <option>CISO</option>
+            <option>Head of Engineering</option>
+            <option>DPO</option>
+            <option>Head of Operations</option>
+            <option>Vendor Manager</option>
+            <option>HR Director</option>
+            <option>CTO</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Treatment Status</label>
+          <select class="form-select" id="f-status">
+            <option>Open</option>
+            <option>Mitigated</option>
+            <option>Accepted</option>
+            <option>Transferred</option>
+            <option>Closed</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Residual Likelihood (1–5)</label>
+          <select class="form-select" id="f-res-likelihood">
+            <option value="1">1 – Rare</option>
+            <option value="2" selected>2 – Unlikely</option>
+            <option value="3">3 – Possible</option>
+            <option value="4">4 – Likely</option>
+            <option value="5">5 – Almost Certain</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Residual Impact (1–5)</label>
+          <select class="form-select" id="f-res-impact">
+            <option value="1">1 – Minimal</option>
+            <option value="2" selected>2 – Minor</option>
+            <option value="3">3 – Moderate</option>
+            <option value="4">4 – Major</option>
+            <option value="5">5 – Catastrophic</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Frameworks</label>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:10px;">
+            <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;"><input type="checkbox" id="fw-iso" checked/> ISO 27001</label>
+            <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;"><input type="checkbox" id="fw-soc2"/> SOC 2</label>
+            <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;"><input type="checkbox" id="fw-gdpr"/> GDPR</label>
+            <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;"><input type="checkbox" id="fw-nist"/> NIST CSF</label>
+          </div>
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Treatment / Mitigation Plan</label>
+          <textarea class="form-textarea" id="f-treatment" placeholder="Describe the controls implemented or planned to mitigate this risk…"></textarea>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:20px;padding-top:16px;border-top:1px solid var(--border);">
+        <button class="btn btn-ghost" onclick="closeModal('add-modal')">Cancel</button>
+        <button class="btn btn-primary" onclick="saveRisk()">💾 Save Risk</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DETAIL MODAL -->
+<div class="modal-overlay" id="detail-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="detail-title"></div>
+        <div style="display:flex;gap:8px;margin-top:8px;" id="detail-badges"></div>
+      </div>
+      <button class="modal-close" onclick="closeModal('detail-modal')">✕</button>
+    </div>
+    <div class="modal-body" id="detail-body"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ── GOOGLE SHEETS CONNECTION ───────────────────────────────────────────────
+// Sheet ID is stored in localStorage — no manual file editing needed.
+// User enters it once via the setup screen and it persists in this browser.
+
+const LS_KEY = 'riskvault_sheet_id';
+
+function getSavedSheetId() {
+  return localStorage.getItem(LS_KEY) || '';
+}
+
+function saveSheetId(id) {
+  localStorage.setItem(LS_KEY, id.trim());
+}
+
+function clearSheetId() {
+  localStorage.removeItem(LS_KEY);
+}
+
+// ── EXTRACT SHEET ID FROM ANY INPUT ───────────────────────────────────────
+function extractSheetId(input) {
+  input = input.trim();
+  // Already a raw Sheet ID (no slashes, no http)
+  if (!input.includes('/') && !input.includes('http')) return input;
+  // Full published URL: https://docs.google.com/spreadsheets/d/e/2PACX-.../pub?output=csv
+  // Extract the 2PACX... part
+  const pubMatch = input.match(/\/d\/e\/([^/]+)/);
+  if (pubMatch) return 'pub:' + pubMatch[1];
+  // Normal edit URL: extract Sheet ID between /d/ and /edit
+  const editMatch = input.match(/\/d\/([a-zA-Z0-9_-]+)/);
+  if (editMatch) return editMatch[1];
+  return input;
+}
+
+// ── BUILD JSONP URL — works from file:// without CORS issues ───────────────
+function buildJsonpUrl(sheetIdOrPub, callbackName) {
+  if (sheetIdOrPub.startsWith('pub:')) {
+    // Published URL format — use gviz with the pub ID
+    const pubId = sheetIdOrPub.slice(4);
+    return `https://docs.google.com/spreadsheets/d/e/${pubId}/pubhtml?gid=0&single=true`;
+  }
+  // Normal Sheet ID — gviz JSONP endpoint (works when sheet is published)
+  return `https://docs.google.com/spreadsheets/d/${sheetIdOrPub}/gviz/tq?tqx=out:json&callback=${callbackName}`;
+}
+
+let risks = [];
+let dataLoaded = false;
+
+// ── LOADING BANNER ─────────────────────────────────────────────────────────
+function showLoading(msg) {
+  let banner = document.getElementById('loading-banner');
+  if (!banner) {
+    banner = document.createElement('div');
+    banner.id = 'loading-banner';
+    banner.style.cssText = `
+      position:fixed;top:0;left:0;right:0;z-index:9999;
+      background:linear-gradient(90deg,#4f8ef7,#7c3aed);
+      color:#fff;font-family:Arial,sans-serif;font-size:13px;font-weight:600;
+      padding:10px 20px;display:flex;align-items:center;gap:12px;
+      box-shadow:0 2px 12px rgba(0,0,0,0.3);
+    `;
+    document.body.prepend(banner);
+  }
+  banner.innerHTML = `<span style="animation:spin 1s linear infinite;display:inline-block">⟳</span> ${msg || 'Connecting to Google Sheets…'}`;
+}
+
+function hideLoading() {
+  const b = document.getElementById('loading-banner');
+  if (b) b.remove();
+}
+
+// ── CONNECTION STATUS PILL ──────────────────────────────────────────────────
+function showConnectionStatus(isConnected, message) {
+  const existing = document.getElementById('conn-status');
+  if (existing) existing.remove();
+  const el = document.createElement('div');
+  el.id = 'conn-status';
+  el.style.cssText = `
+    position:fixed;bottom:70px;right:24px;z-index:9998;
+    background:${isConnected ? 'rgba(6,214,160,0.15)' : 'rgba(245,158,11,0.15)'};
+    border:1px solid ${isConnected ? 'rgba(6,214,160,0.4)' : 'rgba(245,158,11,0.4)'};
+    color:${isConnected ? '#06D6A0' : '#F59E0B'};
+    font-family:monospace;font-size:11px;font-weight:600;
+    padding:8px 14px;border-radius:8px;cursor:pointer;
+    box-shadow:0 4px 16px rgba(0,0,0,0.3);
+  `;
+  el.title = 'Click to change Google Sheet connection';
+  el.textContent = (isConnected ? '● LIVE' : '● OFFLINE') + ' — ' + message;
+  el.onclick = () => openSetupModal(false);
+  document.body.appendChild(el);
+}
+
+// ── SETUP MODAL ─────────────────────────────────────────────────────────────
+function openSetupModal(isFirstTime) {
+  const existing = document.getElementById('setup-overlay');
+  if (existing) existing.remove();
+
+  const savedId = getSavedSheetId();
+
+  const overlay = document.createElement('div');
+  overlay.id = 'setup-overlay';
+  overlay.style.cssText = `
+    position:fixed;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);
+    z-index:10000;display:flex;align-items:center;justify-content:center;padding:20px;
+  `;
+
+  overlay.innerHTML = `
+    <div style="
+      background:#111318;border:1px solid #2e3548;border-radius:16px;
+      width:100%;max-width:560px;box-shadow:0 32px 80px rgba(0,0,0,0.7);
+      overflow:hidden;
+    ">
+      <!-- Header gradient bar -->
+      <div style="height:4px;background:linear-gradient(90deg,#4f8ef7,#7c3aed,#06d6a0);"></div>
+
+      <!-- Header -->
+      <div style="padding:28px 28px 20px;">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+          <div style="
+            width:44px;height:44px;border-radius:12px;flex-shrink:0;
+            background:linear-gradient(135deg,#4f8ef7,#7c3aed);
+            display:flex;align-items:center;justify-content:center;font-size:22px;
+          ">🛡️</div>
+          <div>
+            <div style="font-family:Arial;font-size:18px;font-weight:800;color:#e8ecf4;">
+              ${isFirstTime ? 'Welcome to RiskVault' : 'Google Sheets Connection'}
+            </div>
+            <div style="font-size:12px;color:#5c6580;margin-top:2px;">
+              ${isFirstTime ? 'Connect your Google Sheet to go live — one time setup' : 'Update or disconnect your data source'}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Steps -->
+      <div style="padding:0 28px 20px;">
+        <div style="background:#181c24;border:1px solid #252b3a;border-radius:10px;padding:16px;margin-bottom:20px;">
+          <div style="font-size:11px;color:#4f8ef7;font-family:monospace;font-weight:700;letter-spacing:1px;margin-bottom:12px;">HOW TO GET YOUR SHEET ID</div>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div style="display:flex;gap:10px;align-items:flex-start;">
+              <div style="width:22px;height:22px;border-radius:50%;background:#4f8ef7;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">1</div>
+              <div style="font-size:12px;color:#9aa3b8;line-height:1.6;">In your Google Sheet click the blue <strong style="color:#e8ecf4;">Share</strong> button (top right) → Under "General access" change <strong style="color:#e8ecf4;">Restricted</strong> to <strong style="color:#e8ecf4;">Anyone with the link</strong> → click <strong style="color:#e8ecf4;">Done</strong></div>
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-start;">
+              <div style="width:22px;height:22px;border-radius:50%;background:#06d6a0;color:#0a0c10;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">2</div>
+              <div style="font-size:12px;color:#9aa3b8;line-height:1.6;">Copy the ID from your browser address bar — the part between <code style="background:#252b3a;padding:1px 6px;border-radius:3px;color:#06d6a0;">/d/</code> and <code style="background:#252b3a;padding:1px 6px;border-radius:3px;color:#06d6a0;">/edit</code> — paste it below</div>
+            </div>
+          </div>
+          <div style="margin-top:14px;background:#0a0c10;border-radius:8px;padding:12px;font-family:monospace;font-size:10px;word-break:break-all;line-height:1.8;">
+            <div style="color:#5c6580;margin-bottom:6px;">Your address bar:</div>
+            <span style="color:#475569;">https://docs.google.com/spreadsheets/d/</span><span style="color:#06d6a0;font-weight:700;background:rgba(6,214,160,0.12);padding:2px 5px;border-radius:3px;">YOUR_SHEET_ID_IS_HERE</span><span style="color:#475569;">/edit</span>
+            <div style="color:#4f8ef7;margin-top:6px;font-size:9px;">↑ Copy only the green part and paste below</div>
+          </div>
+        <!-- Input -->
+        <div style="margin-bottom:16px;">
+          <label style="display:block;font-size:11px;color:#9aa3b8;font-family:monospace;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Paste Your Published URL or Sheet ID</label>
+          <input id="setup-sheet-id" type="text"
+            placeholder="e.g. 1xuhPTtYJiK0pn1XUO_56oqCom1cNy2cF2Zbt35uGLJI"
+            value="${savedId}"
+            style="
+              width:100%;background:#181c24;border:1px solid #2e3548;border-radius:8px;
+              color:#e8ecf4;font-size:13px;font-family:monospace;padding:12px 14px;
+              outline:none;box-sizing:border-box;transition:border-color 0.15s;
+            "
+            oninput="this.style.borderColor=this.value.length>20?'#4f8ef7':'#2e3548'"
+          />
+          <div id="setup-error" style="color:#ef4444;font-size:11px;margin-top:6px;display:none;"></div>
+          <div style="font-size:11px;color:#5c6580;margin-top:6px;">
+            💾 Saved in this browser only — you won't need to enter this again on this device.
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <button onclick="connectSheet()" style="
+            flex:1;background:linear-gradient(135deg,#4f8ef7,#7c3aed);color:#fff;
+            border:none;border-radius:8px;padding:12px 20px;font-size:14px;
+            font-weight:700;font-family:Arial;cursor:pointer;
+            box-shadow:0 4px 16px rgba(79,142,247,0.3);
+          ">🔗 Connect & Sync</button>
+          <button onclick="useDemoData()" style="
+            background:transparent;color:#9aa3b8;border:1px solid #2e3548;
+            border-radius:8px;padding:12px 16px;font-size:13px;
+            font-family:Arial;cursor:pointer;white-space:nowrap;
+          ">Use Demo Data</button>
+          ${!isFirstTime ? `<button onclick="disconnectSheet()" style="
+            background:rgba(239,68,68,0.1);color:#ef4444;border:1px solid rgba(239,68,68,0.25);
+            border-radius:8px;padding:12px 14px;font-size:13px;font-family:Arial;cursor:pointer;
+          ">Disconnect</button>` : ''}
+        </div>
+
+        ${!isFirstTime ? `
+        <div style="margin-top:12px;text-align:center;">
+          <button onclick="document.getElementById('setup-overlay').remove()" style="
+            background:none;border:none;color:#5c6580;font-size:12px;cursor:pointer;font-family:Arial;
+          ">Cancel — keep current connection</button>
+        </div>` : ''}
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
+  setTimeout(() => document.getElementById('setup-sheet-id')?.focus(), 100);
+
+  // Allow Enter key to connect
+  document.getElementById('setup-sheet-id').addEventListener('keydown', e => {
+    if (e.key === 'Enter') connectSheet();
+  });
+}
+
+async function connectSheet() {
+  const input = document.getElementById('setup-sheet-id');
+  const errorEl = document.getElementById('setup-error');
+  const rawVal = input.value.trim();
+
+  // Extract Sheet ID from whatever they paste
+  const sheetId = extractSheetId(rawVal);
+
+  if (!sheetId || sheetId.length < 10) {
+    errorEl.textContent = '⚠️ That does not look right — paste the Sheet ID from your Google Sheet URL.';
+    errorEl.style.display = 'block';
+    input.style.borderColor = '#ef4444';
+    return;
+  }
+
+  errorEl.style.display = 'none';
+  input.style.borderColor = '#4f8ef7';
+
+  // Update button to show connecting
+  const btn = document.querySelector('#setup-overlay button');
+  btn.textContent = '⟳ Connecting…';
+  btn.style.opacity = '0.7';
+  btn.style.cursor = 'not-allowed';
+
+  const success = await loadFromGoogleSheets(sheetId);
+  if (success) {
+    saveSheetId(sheetId);
+    document.getElementById('setup-overlay').remove();
+  } else {
+    btn.textContent = '🔗 Connect & Sync';
+    btn.style.opacity = '1';
+    btn.style.cursor = 'pointer';
+    errorEl.innerHTML = '❌ Could not connect. Make sure: (1) sheet is published as CSV via File → Share → Publish to Web, and (2) you pasted the correct Sheet ID from your address bar.';
+    errorEl.style.display = 'block';
+    input.style.borderColor = '#ef4444';
+  }
+}
+
+function disconnectSheet() {
+  clearSheetId();
+  document.getElementById('setup-overlay').remove();
+  risks = getDemoData();
+  renderDashboard();
+  if (document.getElementById('tab-register').classList.contains('active')) renderTable();
+  showConnectionStatus(false, 'Disconnected — showing demo data');
+  showToast('🔌 Disconnected from Google Sheets');
+}
+
+function useDemoData() {
+  document.getElementById('setup-overlay').remove();
+  risks = getDemoData();
+  dataLoaded = true;
+  renderDashboard();
+  if (document.getElementById('tab-register').classList.contains('active')) renderTable();
+  showConnectionStatus(false, 'Demo mode — click to connect your sheet');
+  showToast('📋 Loaded demo data');
+}
+
+// ── GOOGLE SHEETS LOADER — works from file:// via CORS proxies ───────────────
+// Uses multiple public CORS proxies as fallback chain so it always connects
+
+function parseGvizJson(text) {
+  // Strip Google's JSONP wrapper e.g. google.visualization.Query.setResponse({...});
+  const clean = text
+    .replace(/^[\s\S]*?google\.visualization\.Query\.setResponse\(/, '')
+    .replace(/\);?\s*$/, '')
+    .trim();
+  const data = JSON.parse(clean);
+  const rows = data.table.rows;
+  const results = [];
+
+  for (const row of rows) {
+    if (!row.c || !row.c[0] || !row.c[0].v) continue;
+    const firstVal = String(row.c[0].v).trim();
+    if (!/^RSK-\d+$/i.test(firstVal)) continue;
+
+    const get = (i) => {
+      const cell = row.c[i];
+      if (!cell || cell.v === null || cell.v === undefined) return '';
+      return String(cell.v).trim();
+    };
+    const getNum = (i) => { const n = parseInt(get(i)); return (n >= 1 && n <= 5) ? n : 1; };
+
+    const lk = getNum(4), imp = getNum(5), rlk = getNum(8), rimp = getNum(9);
+    const trendRaw = get(16);
+    const trend = trendRaw.includes('↑') ? 'up' : trendRaw.includes('↓') ? 'down' : 'flat';
+
+    results.push({
+      id: get(0), name: get(1), domain: get(2), desc: get(3),
+      likelihood: lk, impact: imp, residualLikelihood: rlk, residualImpact: rimp,
+      status: get(12) || 'Open', owner: get(13) || 'CISO', trend,
+      frameworks: get(14).split(',').map(f => f.trim()).filter(Boolean),
+      treatment: get(17), controls: [],
+      history: [{ date: get(18) || new Date().toISOString().slice(0,10), event: 'Loaded from Google Sheets', icon: '📊' }]
+    });
+  }
+  return results;
+}
+
+function parseCSVText(text) {
+  const lines = text.trim().split(/\r?\n/);
+  function parseLine(line) {
+    const cols = []; let cur = '', inQ = false;
+    for (let i = 0; i < line.length; i++) {
+      const ch = line[i];
+      if (ch === '"') { if (inQ && line[i+1] === '"') { cur += '"'; i++; } else inQ = !inQ; }
+      else if (ch === ',' && !inQ) { cols.push(cur.trim()); cur = ''; }
+      else cur += ch;
+    }
+    cols.push(cur.trim());
+    return cols;
+  }
+  const results = [];
+  for (const line of lines) {
+    if (!line.trim()) continue;
+    const cols = parseLine(line);
+    const first = (cols[0]||'').replace(/^"+|"+$/g,'').trim();
+    if (!/^RSK-\d+$/i.test(first)) continue;
+    const get = (i) => (cols[i]||'').replace(/^"+|"+$/g,'').trim();
+    const getNum = (i) => { const n = parseInt(get(i)); return (n>=1&&n<=5)?n:1; };
+    const lk=getNum(4),imp=getNum(5),rlk=getNum(8),rimp=getNum(9);
+    const trendRaw=get(16);
+    const trend=trendRaw.includes('↑')?'up':trendRaw.includes('↓')?'down':'flat';
+    results.push({
+      id:get(0),name:get(1),domain:get(2),desc:get(3),
+      likelihood:lk,impact:imp,residualLikelihood:rlk,residualImpact:rimp,
+      status:get(12)||'Open',owner:get(13)||'CISO',trend,
+      frameworks:get(14).split(',').map(f=>f.trim()).filter(Boolean),
+      treatment:get(17),controls:[],
+      history:[{date:get(18)||new Date().toISOString().slice(0,10),event:'Loaded from Google Sheets',icon:'📊'}]
+    });
+  }
+  return results;
+}
+
+async function loadFromGoogleSheets(input) {
+  const raw = input || getSavedSheetId();
+  if (!raw) return false;
+
+  showLoading('Connecting to Google Sheets…');
+
+  // Extract clean sheet ID from whatever was pasted
+  const sheetId = extractSheetId(raw);
+  const cleanId = sheetId.startsWith('pub:') ? sheetId.slice(4) : sheetId;
+
+  if (!cleanId || cleanId.length < 10) {
+    hideLoading();
+    return false;
+  }
+
+  console.log('Connecting to Sheet ID:', cleanId);
+
+  // Build all URL variants to try
+  const gvizUrl  = `https://docs.google.com/spreadsheets/d/${cleanId}/gviz/tq?tqx=out:json`;
+  const csvUrl   = `https://docs.google.com/spreadsheets/d/${cleanId}/pub?output=csv`;
+  const csv0Url  = `https://docs.google.com/spreadsheets/d/${cleanId}/pub?output=csv&gid=0`;
+  const exportUrl= `https://docs.google.com/spreadsheets/d/${cleanId}/export?format=csv&gid=0`;
+
+  // CORS proxies — allorigins wraps in JSON, others return raw text
+  const attempts = [
+    // allorigins — most reliable, returns {contents: '...'}
+    { url: `https://api.allorigins.win/get?url=${encodeURIComponent(gvizUrl)}`,  type:'gviz', wrap:'allorigins' },
+    { url: `https://api.allorigins.win/get?url=${encodeURIComponent(csvUrl)}`,   type:'csv',  wrap:'allorigins' },
+    { url: `https://api.allorigins.win/get?url=${encodeURIComponent(csv0Url)}`,  type:'csv',  wrap:'allorigins' },
+    // corsproxy — returns raw text
+    { url: `https://corsproxy.io/?${encodeURIComponent(gvizUrl)}`,  type:'gviz', wrap:'raw' },
+    { url: `https://corsproxy.io/?${encodeURIComponent(csvUrl)}`,   type:'csv',  wrap:'raw' },
+    // codetabs
+    { url: `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(csvUrl)}`,   type:'csv', wrap:'raw' },
+    { url: `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(exportUrl)}`, type:'csv', wrap:'raw' },
+  ];
+
+  for (const attempt of attempts) {
+    try {
+      console.log('Trying:', attempt.type, attempt.url.slice(0,60)+'...');
+      const res = await fetch(attempt.url, { signal: AbortSignal.timeout(10000) });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+
+      let text;
+      if (attempt.wrap === 'allorigins') {
+        const json = await res.json();
+        text = json.contents;
+      } else {
+        text = await res.text();
+      }
+
+      if (!text || text.length < 30) throw new Error('Empty response');
+      if (text.includes('Sign in') && text.includes('<html')) throw new Error('Sheet is private');
+      if (text.includes('"errors"') && text.includes('gviz')) throw new Error('Sheet not accessible via gviz');
+
+      let parsed;
+      try {
+        parsed = attempt.type === 'gviz' ? parseGvizJson(text) : parseCSVText(text);
+      } catch(parseErr) {
+        // gviz parse failed — try treating as CSV
+        parsed = parseCSVText(text);
+      }
+
+      if (parsed.length === 0) throw new Error('Connected but 0 RSK- rows found');
+
+      // SUCCESS
+      risks = parsed;
+      dataLoaded = true;
+      hideLoading();
+      showConnectionStatus(true, `${risks.length} risks synced · click to reconfigure`);
+      showToast(`✅ ${risks.length} risks loaded from Google Sheets`);
+      renderDashboard();
+      if (document.getElementById('tab-register').classList.contains('active')) renderTable();
+      return true;
+
+    } catch(err) {
+      console.warn(`❌ Failed [${attempt.type}]:`, err.message);
+    }
+  }
+
+  console.error('All connection attempts exhausted');
+  hideLoading();
+  return false;
+}
+
+// ── REFRESH (called by Refresh button) ────────────────────────────────────
+async function refreshData() {
+  const id = getSavedSheetId();
+  if (!id) { openSetupModal(false); return; }
+  const ok = await loadFromGoogleSheets(id);
+  if (!ok) showToast('⚠️ Refresh failed — check your connection');
+}
+
+// ── OPEN GOOGLE SHEET (for adding/editing risks) ───────────────────────────
+function openGoogleSheet() {
+  const saved = getSavedSheetId();
+  if (!saved || saved.length < 10) {
+    showToast('⚠️ No sheet connected — click 🔗 Sheet Settings first');
+    return;
+  }
+  // Extract clean sheet ID
+  const sheetId = extractSheetId(saved);
+  const url = `https://docs.google.com/spreadsheets/d/${sheetId}/edit#gid=0`;
+  window.open(url, '_blank');
+  showToast('📊 Opening your Google Sheet — add your risk there, then click 🔄 Refresh');
+}
+
+// ── DEMO DATA (fallback when sheet not connected) ──────────────────────────
+function getDemoData() {
+  // Returns empty array — all data comes from Google Sheet
+  // Demo data only shown if no sheet is connected
+  const saved = getSavedSheetId();
+  if (saved && saved.length > 10) {
+    // Sheet is connected — return empty, data will load from sheet
+    return [];
+  }
+  // No sheet connected — return sample data so dashboard is not blank
+  return [
+  {
+    id:'RSK-001', name:'Cloud Storage Misconfiguration', domain:'Cloud & Infrastructure',
+    desc:'Improperly configured S3 buckets or Azure Blob Storage may expose sensitive customer data to the public internet. Threat source: internal misconfiguration or lack of baseline security configuration review.',
+    likelihood:4, impact:5, residualLikelihood:2, residualImpact:3,
+    status:'Open', owner:'CISO', trend:'up',
+    frameworks:['ISO 27001','SOC 2','NIST CSF'],
+    treatment:'Implement automated configuration scanning (AWS Config/Azure Policy). Enforce bucket-level ACLs and public access blocks. Include in monthly cloud security review.',
+    controls:[
+      {name:'AWS Config Rules — S3 public access block', status:'implemented', ref:'A.8.20'},
+      {name:'Automated misconfiguration alerts (CSPM tool)', status:'in-progress', ref:'CC7.1'},
+      {name:'Infrastructure-as-code security scanning (Checkov)', status:'planned', ref:'PR.DS-01'},
+    ],
+    history:[
+      {date:'2026-07-15', event:'Risk identified during cloud security review', icon:'🔍'},
+      {date:'2026-07-18', event:'Escalated to CISO — Critical severity confirmed', icon:'🚨'},
+      {date:'2026-08-01', event:'AWS Config rules deployed to 3 of 5 accounts', icon:'✅'},
+    ]
+  },
+  {
+    id:'RSK-002', name:'Third-Party Vendor Data Access', domain:'Third Party',
+    desc:'Vendors with excessive or poorly governed access to production systems and customer data present a significant supply chain risk. Inadequate contractual protections or DPA agreements compound this.',
+    likelihood:3, impact:5, residualLikelihood:2, residualImpact:3,
+    status:'Open', owner:'Vendor Manager', trend:'flat',
+    frameworks:['ISO 27001','SOC 2','GDPR'],
+    treatment:'Implement vendor risk tiering (Tier 1–3). Mandate DPA agreements for all Tier 1 vendors. Deploy privileged access management (PAM) for vendor sessions.',
+    controls:[
+      {name:'Vendor risk tiering framework', status:'implemented', ref:'A.5.19'},
+      {name:'Data Processing Agreements (DPA) — all Tier 1', status:'in-progress', ref:'GDPR Art.28'},
+      {name:'PAM solution for vendor remote access', status:'planned', ref:'CC6.3'},
+    ],
+    history:[
+      {date:'2026-05-10', event:'TPRM programme initiated', icon:'📋'},
+      {date:'2026-06-20', event:'Vendor inventory completed — 34 vendors assessed', icon:'✅'},
+      {date:'2026-07-30', event:'DPA gap identified for 8 Tier 1 vendors', icon:'⚠️'},
+    ]
+  },
+  {
+    id:'RSK-003', name:'Ransomware Attack on Core Systems', domain:'Information Security',
+    desc:'Ransomware targeting critical business systems could result in total data loss, operational shutdown, and regulatory breach notification obligations under GDPR Art.33.',
+    likelihood:3, impact:5, residualLikelihood:1, residualImpact:4,
+    status:'Mitigated', owner:'CISO', trend:'down',
+    frameworks:['ISO 27001','SOC 2','NIST CSF','GDPR'],
+    treatment:'EDR deployed across all endpoints. Immutable backups enforced. Tabletop incident response exercise completed Q1 2026. Network segmentation implemented.',
+    controls:[
+      {name:'Endpoint Detection & Response (CrowdStrike)', status:'implemented', ref:'A.8.7'},
+      {name:'Immutable backups — 3-2-1 strategy', status:'implemented', ref:'A.8.13'},
+      {name:'Network micro-segmentation', status:'implemented', ref:'A.8.22'},
+      {name:'IR tabletop exercise — annual', status:'in-progress', ref:'A.5.26'},
+    ],
+    history:[
+      {date:'2026-01-12', event:'Risk escalated following industry incidents', icon:'🚨'},
+      {date:'2026-02-28', event:'EDR platform deployed to all 340 endpoints', icon:'✅'},
+      {date:'2026-04-15', event:'IR tabletop exercise completed — gaps documented', icon:'📋'},
+      {date:'2026-06-01', event:'Risk score reduced 20→12 following controls', icon:'📉'},
+    ]
+  },
+  {
+    id:'RSK-004', name:'GDPR Non-Compliance — Data Retention', domain:'Compliance & Legal',
+    desc:'Failure to implement and enforce data retention schedules could result in personal data being held beyond its lawful purpose. Regulatory fines under GDPR Art.5(1)(e) could reach 4% of global annual turnover.',
+    likelihood:3, impact:4, residualLikelihood:2, residualImpact:3,
+    status:'Open', owner:'DPO', trend:'flat',
+    frameworks:['GDPR','ISO 27001'],
+    treatment:'Define data retention schedules per data category. Automate deletion workflows. Update privacy notices and Records of Processing Activities (RoPA).',
+    controls:[
+      {name:'Data retention policy — approved', status:'implemented', ref:'A.8.10'},
+      {name:'Automated deletion workflow (Tier 1 data)', status:'in-progress', ref:'GDPR Art.5'},
+      {name:'RoPA update — all processing activities', status:'in-progress', ref:'GDPR Art.30'},
+    ],
+    history:[
+      {date:'2026-03-01', event:'ICO guidance reviewed — gap analysis initiated', icon:'🔍'},
+      {date:'2026-04-10', event:'Retention schedule approved by DPO and Legal', icon:'✅'},
+      {date:'2026-07-20', event:'Automated deletion deployed for customer PII', icon:'✅'},
+    ]
+  },
+  {
+    id:'RSK-005', name:'Privileged Account Compromise', domain:'Information Security',
+    desc:'Compromise of admin or privileged accounts through credential theft, phishing, or insider threat could allow full system access, data exfiltration, and persistent backdoor installation.',
+    likelihood:3, impact:4, residualLikelihood:1, residualImpact:3,
+    status:'Mitigated', owner:'Head of Engineering', trend:'down',
+    frameworks:['ISO 27001','SOC 2','NIST CSF'],
+    treatment:'Enforce MFA on all privileged accounts. Implement just-in-time (JIT) access. Deploy PAM solution. Quarterly access reviews conducted.',
+    controls:[
+      {name:'MFA enforced — all privileged accounts', status:'implemented', ref:'A.5.17'},
+      {name:'Just-in-time privileged access (JIT)', status:'implemented', ref:'CC6.1'},
+      {name:'Quarterly access review — privileged accounts', status:'implemented', ref:'A.5.18'},
+    ],
+    history:[
+      {date:'2025-11-15', event:'Phishing simulation revealed 3 admin accounts at risk', icon:'⚠️'},
+      {date:'2025-12-01', event:'MFA enforced across all 45 privileged accounts', icon:'✅'},
+      {date:'2026-02-15', event:'PAM solution deployed for database admins', icon:'✅'},
+    ]
+  },
+  {
+    id:'RSK-006', name:'Business Email Compromise (BEC)', domain:'Information Security',
+    desc:'Attackers impersonating executives or finance personnel via spoofed or compromised email to initiate fraudulent wire transfers or data exfiltration.',
+    likelihood:4, impact:4, residualLikelihood:2, residualImpact:2,
+    status:'Mitigated', owner:'CISO', trend:'down',
+    frameworks:['ISO 27001','NIST CSF'],
+    treatment:'DMARC/DKIM/SPF enforced on all domains. Anti-phishing training quarterly. Out-of-band verification process for wire transfers over £10K.',
+    controls:[
+      {name:'DMARC policy (p=reject) on all domains', status:'implemented', ref:'A.8.20'},
+      {name:'Quarterly phishing simulation & training', status:'implemented', ref:'A.6.3'},
+      {name:'Wire transfer verification OOB process', status:'implemented', ref:'A.5.15'},
+    ],
+    history:[
+      {date:'2025-09-10', event:'BEC attempt identified and blocked by finance team', icon:'🚨'},
+      {date:'2025-10-01', event:'DMARC p=reject deployed across all 12 domains', icon:'✅'},
+      {date:'2026-01-15', event:'All-staff phishing awareness training completed', icon:'✅'},
+    ]
+  },
+  {
+    id:'RSK-007', name:'Software Supply Chain Attack', domain:'Third Party',
+    desc:'Malicious code injected into third-party libraries or open-source dependencies used in production software, similar to SolarWinds or Log4Shell attack patterns.',
+    likelihood:2, impact:5, residualLikelihood:1, residualImpact:4,
+    status:'Open', owner:'Head of Engineering', trend:'up',
+    frameworks:['ISO 27001','SOC 2','NIST CSF'],
+    treatment:'Implement Software Bill of Materials (SBOM). Automated dependency scanning in CI/CD pipeline. Vendor code signing verification.',
+    controls:[
+      {name:'SBOM generation — all production services', status:'in-progress', ref:'A.5.21'},
+      {name:'Dependency scanning (Snyk) in CI/CD', status:'implemented', ref:'CC8.1'},
+      {name:'Code signing verification policy', status:'planned', ref:'A.8.25'},
+    ],
+    history:[
+      {date:'2026-05-01', event:'Risk added following NCSC supply chain advisory', icon:'🔍'},
+      {date:'2026-06-15', event:'Snyk deployed to all 6 production repositories', icon:'✅'},
+      {date:'2026-07-30', event:'SBOM initiative scoped — 3 months to complete', icon:'📋'},
+    ]
+  },
+  {
+    id:'RSK-008', name:'Insider Threat — Data Exfiltration', domain:'Human Resources',
+    desc:'Malicious or negligent insider copying or transmitting sensitive customer or proprietary data to unauthorised external destinations, particularly during employment transitions.',
+    likelihood:2, impact:4, residualLikelihood:1, residualImpact:3,
+    status:'Accepted', owner:'HR Director', trend:'flat',
+    frameworks:['ISO 27001','SOC 2','GDPR'],
+    treatment:'DLP tools monitoring high-risk data movements. Offboarding checklist enforced. Access revoked within 1 hour of termination. User activity monitoring for high-risk roles.',
+    controls:[
+      {name:'DLP solution — email & endpoint monitoring', status:'implemented', ref:'A.8.12'},
+      {name:'Offboarding checklist — access revocation <1hr', status:'implemented', ref:'A.6.5'},
+      {name:'User behaviour analytics (UBA)', status:'planned', ref:'CC7.2'},
+    ],
+    history:[
+      {date:'2025-12-10', event:'DLP deployed covering email, USB, and cloud upload', icon:'✅'},
+      {date:'2026-01-20', event:'Risk accepted at residual level by HR Director & CISO', icon:'📋'},
+      {date:'2026-06-01', event:'Annual review — acceptance maintained', icon:'🔄'},
+    ]
+  },
+  {
+    id:'RSK-009', name:'DDoS Attack on Customer-Facing Services', domain:'Cloud & Infrastructure',
+    desc:'Volumetric or application-layer DDoS attack targeting customer-facing APIs or web portals, causing service unavailability and SLA breaches.',
+    likelihood:3, impact:3, residualLikelihood:2, residualImpact:2,
+    status:'Transferred', owner:'CTO', trend:'flat',
+    frameworks:['ISO 27001','SOC 2'],
+    treatment:'DDoS protection via Cloudflare Enterprise (transferred financial risk). Rate limiting on all public APIs. Auto-scaling configured. Incident runbook documented.',
+    controls:[
+      {name:'Cloudflare Enterprise DDoS protection', status:'implemented', ref:'A.8.20'},
+      {name:'API rate limiting & WAF rules', status:'implemented', ref:'CC6.6'},
+      {name:'Auto-scaling configuration (AWS/Azure)', status:'implemented', ref:'A1.2'},
+    ],
+    history:[
+      {date:'2025-08-15', event:'DDoS incident caused 4hr outage — post-incident review', icon:'🚨'},
+      {date:'2025-09-01', event:'Cloudflare Enterprise contract signed', icon:'✅'},
+      {date:'2025-10-10', event:'Risk transferred — financial exposure covered by policy', icon:'🔀'},
+    ]
+  },
+  {
+    id:'RSK-010', name:'Unpatched Critical Vulnerabilities', domain:'Information Security',
+    desc:'Failure to apply critical security patches within defined SLAs leaves systems exposed to known exploits. CVEs with CVSS score ≥9.0 must be remediated within 24 hours per policy.',
+    likelihood:3, impact:4, residualLikelihood:2, residualImpact:2,
+    status:'Mitigated', owner:'Head of Engineering', trend:'down',
+    frameworks:['ISO 27001','SOC 2','NIST CSF','GDPR'],
+    treatment:'Automated vulnerability scanning (Qualys/Tenable). Patch management policy: Critical 24hr, High 7 days, Medium 30 days. Monthly patching window enforced.',
+    controls:[
+      {name:'Qualys vulnerability scanner — weekly scans', status:'implemented', ref:'A.8.8'},
+      {name:'Patch management SLA policy', status:'implemented', ref:'CC7.1'},
+      {name:'Automated patching — non-critical systems', status:'in-progress', ref:'ID.RA-05'},
+    ],
+    history:[
+      {date:'2026-01-10', event:'Log4Shell-type exposure identified — emergency patch', icon:'🚨'},
+      {date:'2026-02-01', event:'Qualys deployed across all production systems', icon:'✅'},
+      {date:'2026-05-15', event:'Patch compliance rate improved from 67% to 94%', icon:'📈'},
+    ]
+  },
+  {
+    id:'RSK-011', name:'Inadequate Backup & Recovery Testing', domain:'Operational',
+    desc:'Backups exist but recovery procedures are untested. Without validated restore capability, backups may fail during an actual incident, creating false assurance.',
+    likelihood:2, impact:5, residualLikelihood:1, residualImpact:3,
+    status:'Open', owner:'Head of Operations', trend:'flat',
+    frameworks:['ISO 27001','SOC 2'],
+    treatment:'Quarterly backup restoration tests for all Tier 1 systems. Document RTO/RPO targets. Update BCP/DRP documentation. Results reported to CISO.',
+    controls:[
+      {name:'Automated daily backups — all Tier 1 systems', status:'implemented', ref:'A.8.13'},
+      {name:'Quarterly restore tests with documented results', status:'in-progress', ref:'A1.3'},
+      {name:'RTO/RPO targets defined per system tier', status:'in-progress', ref:'A.5.30'},
+    ],
+    history:[
+      {date:'2026-04-01', event:'Backup restore test failed for 2 of 6 systems', icon:'⚠️'},
+      {date:'2026-05-15', event:'Root cause identified — backup agent misconfiguration', icon:'🔍'},
+      {date:'2026-06-30', event:'Restore test repeated — 6 of 6 systems successful', icon:'✅'},
+    ]
+  },
+  {
+    id:'RSK-012', name:'Social Engineering & Phishing', domain:'Human Resources',
+    desc:'Employees targeted via spear-phishing, vishing, or pretexting attacks leading to credential disclosure, malware installation, or unauthorised access.',
+    likelihood:4, impact:3, residualLikelihood:2, residualImpact:2,
+    status:'Mitigated', owner:'CISO', trend:'down',
+    frameworks:['ISO 27001','SOC 2','NIST CSF'],
+    treatment:'Quarterly phishing simulations. Mandatory annual security awareness training. Anti-phishing email filtering. Privileged account protections (MFA, JIT).',
+    controls:[
+      {name:'Quarterly phishing simulations (KnowBe4)', status:'implemented', ref:'A.6.3'},
+      {name:'Annual mandatory security awareness training', status:'implemented', ref:'A.6.3'},
+      {name:'Advanced email filtering (Microsoft Defender)', status:'implemented', ref:'A.8.7'},
+    ],
+    history:[
+      {date:'2025-10-01', event:'Click rate on phishing simulation: 22%', icon:'⚠️'},
+      {date:'2026-01-15', event:'Full company security awareness training — 98% completion', icon:'✅'},
+      {date:'2026-04-01', event:'Click rate reduced to 6% — significant improvement', icon:'📉'},
+    ]
+  }
+];
+}
+
+let sortKey = 'score', sortDir = 1, currentPage = 1, pageSize = 10;
+let editingId = null;
+
+// ── SCORING ───────────────────────────────────────────────────────────────
+const getSeverity = s => s >= 17 ? 'Critical' : s >= 10 ? 'High' : s >= 5 ? 'Medium' : 'Low';
+const getSeverityColor = s => s === 'Critical' ? 'var(--critical)' : s === 'High' ? 'var(--high)' : s === 'Medium' ? 'var(--medium)' : 'var(--low)';
+
+// ── NAVIGATION ────────────────────────────────────────────────────────────
+function switchNav(el, tab) {
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  el.classList.add('active');
+  showTab(tab);
+  const titles = { dashboard:'📊 Dashboard', register:'📋 Risk Register', heatmap:'🔥 Risk Heatmap', guide:'📖 Risk Guide' };
+  document.getElementById('page-title').textContent = titles[tab] || '';
+}
+
+function showTab(tab) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + tab)?.classList.add('active');
+  if (tab === 'register') renderTable();
+  if (tab === 'dashboard') renderDashboard();
+  if (tab === 'heatmap') renderHeatmap();
+}
+
+// ── DASHBOARD ─────────────────────────────────────────────────────────────
+function renderDashboard() {
+  const c = { Critical:0, High:0, Medium:0, Low:0 };
+  const domains = {};
+  const statuses = { Open:0, Mitigated:0, Accepted:0, Transferred:0, Closed:0 };
+
+  risks.forEach(r => {
+    const s = getSeverity(r.likelihood * r.impact);
+    c[s]++;
+    domains[r.domain] = (domains[r.domain] || 0) + 1;
+    statuses[r.status]++;
+  });
+
+  document.getElementById('m-critical').textContent = c.Critical;
+  document.getElementById('m-high').textContent = c.High;
+  document.getElementById('m-medium').textContent = c.Medium;
+  document.getElementById('m-low').textContent = c.Low;
+  document.getElementById('m-total').textContent = risks.length;
+
+  // Top risks
+  const sorted = [...risks].sort((a,b) => (b.likelihood*b.impact) - (a.likelihood*a.impact)).slice(0,6);
+  const trl = document.getElementById('top-risks-list');
+  trl.innerHTML = sorted.map(r => {
+    const score = r.likelihood * r.impact;
+    const sev = getSeverity(score);
+    const col = getSeverityColor(sev);
+    return `<div class="recent-item" onclick="openDetail('${r.id}')" style="cursor:pointer;">
+      <div class="recent-dot" style="background:${col};box-shadow:0 0 6px ${col};"></div>
+      <div class="recent-info">
+        <div class="recent-name">${r.name}</div>
+        <div class="recent-meta">${r.domain} · ${r.owner} · ${r.status}</div>
+      </div>
+      <div class="recent-score" style="color:${col}">${score}</div>
+    </div>`;
+  }).join('');
+
+  // Domain chart
+  const maxD = Math.max(...Object.values(domains));
+  const domColors = ['var(--accent)','var(--accent2)','var(--accent3)','var(--accent4)','var(--high)','var(--critical)'];
+  document.getElementById('domain-chart').innerHTML = Object.entries(domains).map(([k,v], i) =>
+    `<div class="bar-row">
+      <div class="bar-label" style="font-size:11px;">${k.length > 18 ? k.slice(0,18)+'…' : k}</div>
+      <div class="bar-track">
+        <div class="bar-fill" style="width:${(v/maxD)*100}%;background:${domColors[i%domColors.length]};color:#fff;">${v}</div>
+      </div>
+    </div>`
+  ).join('');
+
+  // Donut legend
+  const statusColors = { Open:'var(--accent)', Mitigated:'var(--low)', Accepted:'#a78bfa', Transferred:'var(--medium)', Closed:'var(--text3)' };
+  document.getElementById('donut-legend').innerHTML = Object.entries(statuses).filter(([,v])=>v>0).map(([k,v]) =>
+    `<div class="legend-item"><div class="legend-dot" style="background:${statusColors[k]}"></div><span>${k}: <strong>${v}</strong></span></div>`
+  ).join('');
+}
+
+// ── TABLE ─────────────────────────────────────────────────────────────────
+function getFiltered() {
+  const sev = document.getElementById('filter-severity')?.value || '';
+  const dom = document.getElementById('filter-domain')?.value || '';
+  const stat = document.getElementById('filter-status')?.value || '';
+  const fw = document.getElementById('filter-framework')?.value || '';
+  const q = document.getElementById('search-input')?.value.toLowerCase() || '';
+
+  return risks.filter(r => {
+    const score = r.likelihood * r.impact;
+    const severity = getSeverity(score);
+    if (sev && severity !== sev) return false;
+    if (dom && r.domain !== dom) return false;
+    if (stat && r.status !== stat) return false;
+    if (fw && !r.frameworks.includes(fw)) return false;
+    if (q && !r.name.toLowerCase().includes(q) && !r.id.toLowerCase().includes(q) && !r.domain.toLowerCase().includes(q)) return false;
+    return true;
+  });
+}
+
+function renderTable() {
+  const filtered = getFiltered();
+  const sorted = [...filtered].sort((a,b) => {
+    let av = a[sortKey], bv = b[sortKey];
+    if (sortKey === 'score') { av = a.likelihood*a.impact; bv = b.likelihood*b.impact; }
+    if (sortKey === 'residualScore') { av = a.residualLikelihood*a.residualImpact; bv = b.residualLikelihood*b.residualImpact; }
+    if (sortKey === 'severity') {
+      const order = {Critical:4,High:3,Medium:2,Low:1};
+      av = order[getSeverity(a.likelihood*a.impact)];
+      bv = order[getSeverity(b.likelihood*b.impact)];
+    }
+    if (typeof av === 'string') return av.localeCompare(bv) * sortDir;
+    return (av - bv) * sortDir;
+  });
+
+  const total = sorted.length;
+  const pages = Math.ceil(total / pageSize);
+  if (currentPage > pages) currentPage = 1;
+  const slice = sorted.slice((currentPage-1)*pageSize, currentPage*pageSize);
+
+  const tbody = document.getElementById('risk-tbody');
+  tbody.innerHTML = slice.map(r => {
+    const score = r.likelihood * r.impact;
+    const residual = r.residualLikelihood * r.residualImpact;
+    const sev = getSeverity(score);
+    const trendIcon = r.trend === 'up' ? '<span class="trend-up">↑</span>' : r.trend === 'down' ? '<span class="trend-down">↓</span>' : '<span class="trend-flat">→</span>';
+    const fwTags = r.frameworks.map(f => `<span class="framework-tag">${f}</span>`).join('');
+    return `<tr onclick="openDetail('${r.id}')">
+      <td><span class="risk-id">${r.id}</span></td>
+      <td><div class="risk-name">${r.name}</div><div class="risk-name-sub">${r.domain}</div></td>
+      <td style="font-size:12px;color:var(--text2);">${r.domain}</td>
+      <td><span class="badge badge-${sev.toLowerCase()}">${sev}</span></td>
+      <td style="font-family:var(--font-mono);text-align:center;">${r.likelihood}</td>
+      <td style="font-family:var(--font-mono);text-align:center;">${r.impact}</td>
+      <td><span class="score-pill score-${score}" style="background:${getScoreBg(score)};color:${getScoreColor(score)};">${score}</span></td>
+      <td><span class="score-pill score-${residual}" style="background:${getScoreBg(residual)};color:${getScoreColor(residual)};">${residual}</span></td>
+      <td>${trendIcon}</td>
+      <td><span class="badge badge-${r.status.toLowerCase()}">${r.status}</span></td>
+      <td style="font-size:12px;color:var(--text2);white-space:nowrap;">${r.owner}</td>
+      <td><div class="framework-tags">${fwTags}</div></td>
+      <td onclick="event.stopPropagation()">
+        <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px;" onclick="openGoogleSheet()" title="Edit in Google Sheet">✏️ Edit</button>
+      </td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('page-info').textContent = `Showing ${slice.length} of ${total} risks`;
+
+  const pageBtns = document.getElementById('page-btns');
+  pageBtns.innerHTML = '';
+  for (let i = 1; i <= pages; i++) {
+    const btn = document.createElement('button');
+    btn.className = 'page-btn' + (i === currentPage ? ' active' : '');
+    btn.textContent = i;
+    btn.onclick = () => { currentPage = i; renderTable(); };
+    pageBtns.appendChild(btn);
+  }
+}
+
+function getScoreBg(s) { return s >= 17 ? 'rgba(239,68,68,0.15)' : s >= 10 ? 'rgba(249,115,22,0.15)' : s >= 5 ? 'rgba(245,158,11,0.15)' : 'rgba(6,214,160,0.15)'; }
+function getScoreColor(s) { return s >= 17 ? 'var(--critical)' : s >= 10 ? 'var(--high)' : s >= 5 ? 'var(--medium)' : 'var(--low)'; }
+
+function sortTable(key) { sortKey = key === sortKey ? key : key; sortDir = sortKey === key ? -sortDir : 1; sortKey = key; renderTable(); }
+function filterRisks() { currentPage = 1; renderTable(); }
+function clearFilters() {
+  ['filter-severity','filter-domain','filter-status','filter-framework'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('search-input').value = '';
+  filterRisks();
+}
+
+// ── HEATMAP ───────────────────────────────────────────────────────────────
+function renderHeatmap() {
+  const grid = document.getElementById('heatmap-grid');
+  grid.innerHTML = '';
+
+  // Build counts
+  const counts = {};
+  risks.forEach(r => { const k = `${r.likelihood}-${r.impact}`; counts[k] = (counts[k]||[]).concat(r); });
+
+  // Y axis labels
+  const yLabels = ['5','4','3','2','1'];
+  const xLabels = ['1','2','3','4','5'];
+
+  yLabels.forEach(y => {
+    const lbl = document.createElement('div');
+    lbl.className = 'hm-label';
+    lbl.textContent = `L${y}`;
+    grid.appendChild(lbl);
+    xLabels.forEach(x => {
+      const score = parseInt(y) * parseInt(x);
+      const cls = score >= 17 ? 'hm-critical' : score >= 10 ? 'hm-high' : score >= 5 ? 'hm-medium' : 'hm-low';
+      const cell = document.createElement('div');
+      cell.className = `hm-cell ${cls}`;
+      const list = counts[`${y}-${x}`] || [];
+      cell.innerHTML = list.length ? `<strong>${list.length}</strong>` : `<span style="opacity:0.3">${score}</span>`;
+      cell.title = `L${y} × I${x} = ${score}`;
+      cell.onclick = () => showHeatmapDetail(y, x, list);
+      grid.appendChild(cell);
+    });
+  });
+
+  // X axis labels
+  const corner = document.createElement('div');
+  grid.appendChild(corner);
+  xLabels.forEach(x => {
+    const lbl = document.createElement('div');
+    lbl.className = 'hm-label col';
+    lbl.textContent = `I${x}`;
+    grid.appendChild(lbl);
+  });
+}
+
+function showHeatmapDetail(l, i, list) {
+  const det = document.getElementById('heatmap-detail');
+  if (!list.length) { det.innerHTML = `<div style="color:var(--text3);font-size:13px;">No risks at L${l} × I${i}</div>`; return; }
+  det.innerHTML = `<div style="font-size:12px;color:var(--text3);margin-bottom:10px;font-family:var(--font-mono);">L${l} × I${i} = ${parseInt(l)*parseInt(i)} — ${list.length} risk(s)</div>` +
+    list.map(r => `<div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px;margin-bottom:8px;cursor:pointer;" onclick="openDetail('${r.id}')">
+      <div style="font-weight:600;font-size:13px;margin-bottom:4px;">${r.name}</div>
+      <div style="font-size:11px;color:var(--text3);">${r.domain} · ${r.status} · ${r.owner}</div>
+    </div>`).join('');
+}
+
+// ── DETAIL MODAL ──────────────────────────────────────────────────────────
+function openDetail(id) {
+  const r = risks.find(x => x.id === id);
+  if (!r) return;
+  const score = r.likelihood * r.impact;
+  const residual = r.residualLikelihood * r.residualImpact;
+  const sev = getSeverity(score);
+
+  document.getElementById('detail-title').textContent = `${r.id} — ${r.name}`;
+  document.getElementById('detail-badges').innerHTML =
+    `<span class="badge badge-${sev.toLowerCase()}">${sev}</span>
+     <span class="badge badge-${r.status.toLowerCase()}">${r.status}</span>
+     ${r.frameworks.map(f=>`<span class="framework-tag">${f}</span>`).join('')}`;
+
+  document.getElementById('detail-body').innerHTML = `
+    <div style="background:var(--surface2);border-radius:8px;padding:14px;margin-bottom:16px;font-size:13px;color:var(--text2);line-height:1.7;">${r.desc}</div>
+    <div class="detail-grid">
+      <div class="detail-item"><div class="detail-item-label">Domain</div><div class="detail-item-value">${r.domain}</div></div>
+      <div class="detail-item"><div class="detail-item-label">Risk Owner</div><div class="detail-item-value">${r.owner}</div></div>
+      <div class="detail-item"><div class="detail-item-label">Treatment Status</div><div class="detail-item-value"><span class="badge badge-${r.status.toLowerCase()}">${r.status}</span></div></div>
+      <div class="detail-item"><div class="detail-item-label">Inherent Score</div><div class="detail-item-value" style="color:${getScoreColor(score)};font-family:var(--font-display);font-size:20px;font-weight:800;">${score} <span style="font-size:12px;color:var(--text3)">${sev}</span></div></div>
+      <div class="detail-item"><div class="detail-item-label">Likelihood × Impact</div><div class="detail-item-value" style="font-family:var(--font-mono);">${r.likelihood} × ${r.impact}</div></div>
+      <div class="detail-item"><div class="detail-item-label">Residual Score</div><div class="detail-item-value" style="color:${getScoreColor(residual)};font-family:var(--font-display);font-size:20px;font-weight:800;">${residual} <span style="font-size:12px;color:var(--text3)">${getSeverity(residual)}</span></div></div>
+    </div>
+    <div class="section-sub-title">🛡️ Controls</div>
+    <div class="control-list">
+      ${r.controls.map(c => `<div class="control-item">
+        <div class="control-status ${c.status.replace(' ','-')}"></div>
+        <div><div class="control-name">${c.name}</div><div class="control-meta">Ref: ${c.ref} · <span style="text-transform:capitalize;">${c.status.replace('-',' ')}</span></div></div>
+      </div>`).join('')}
+    </div>
+    <div class="section-sub-title">📋 Treatment Plan</div>
+    <div style="background:var(--surface2);border-radius:8px;padding:14px;font-size:13px;color:var(--text2);line-height:1.7;">${r.treatment}</div>
+    <div class="section-sub-title">🕐 Risk History</div>
+    <div class="timeline">
+      ${r.history.map(h => `<div class="timeline-item">
+        <div class="timeline-dot">${h.icon}</div>
+        <div class="timeline-content">
+          <div class="timeline-date">${h.date}</div>
+          <div class="timeline-text">${h.event}</div>
+        </div>
+      </div>`).join('')}
+    </div>
+    <div style="display:flex;gap:10px;margin-top:20px;padding-top:16px;border-top:1px solid var(--border);">
+      <button class="btn btn-primary" onclick="openGoogleSheet();closeModal('detail-modal')">✏️ Edit in Google Sheet</button>
+      <button class="btn btn-ghost" onclick="closeModal('detail-modal')" style="margin-left:auto;">Close</button>
+    </div>
+  `;
+  document.getElementById('detail-modal').classList.add('open');
+}
+
+// ── ADD / EDIT MODAL ──────────────────────────────────────────────────────
+function openAddModal() {
+  editingId = null;
+  document.querySelectorAll('#add-modal .form-input, #add-modal .form-textarea').forEach(el => el.value = '');
+  document.getElementById('f-likelihood').value = '3';
+  document.getElementById('f-impact').value = '3';
+  document.getElementById('f-res-likelihood').value = '2';
+  document.getElementById('f-res-impact').value = '2';
+  document.getElementById('f-domain').value = 'Information Security';
+  document.getElementById('f-owner').value = 'CISO';
+  document.getElementById('f-status').value = 'Open';
+  ['fw-iso','fw-soc2','fw-gdpr','fw-nist'].forEach(id => document.getElementById(id).checked = id === 'fw-iso');
+  calcScore();
+  document.getElementById('add-modal').classList.add('open');
+}
+
+function openEdit(id) {
+  const r = risks.find(x => x.id === id);
+  if (!r) return;
+  editingId = id;
+  document.getElementById('f-name').value = r.name;
+  document.getElementById('f-desc').value = r.desc;
+  document.getElementById('f-domain').value = r.domain;
+  document.getElementById('f-likelihood').value = r.likelihood;
+  document.getElementById('f-impact').value = r.impact;
+  document.getElementById('f-res-likelihood').value = r.residualLikelihood;
+  document.getElementById('f-res-impact').value = r.residualImpact;
+  document.getElementById('f-owner').value = r.owner;
+  document.getElementById('f-status').value = r.status;
+  document.getElementById('f-treatment').value = r.treatment;
+  document.getElementById('fw-iso').checked = r.frameworks.includes('ISO 27001');
+  document.getElementById('fw-soc2').checked = r.frameworks.includes('SOC 2');
+  document.getElementById('fw-gdpr').checked = r.frameworks.includes('GDPR');
+  document.getElementById('fw-nist').checked = r.frameworks.includes('NIST CSF');
+  calcScore();
+  document.getElementById('add-modal').classList.add('open');
+}
+
+function calcScore() {
+  const l = parseInt(document.getElementById('f-likelihood').value);
+  const i = parseInt(document.getElementById('f-impact').value);
+  const score = l * i;
+  const sev = getSeverity(score);
+  const el = document.getElementById('score-preview');
+  el.textContent = score;
+  el.style.color = getScoreColor(score);
+  document.getElementById('severity-preview').textContent = sev;
+}
+
+function saveRisk() {
+  const name = document.getElementById('f-name').value.trim();
+  if (!name) { showToast('⚠️ Risk name is required'); return; }
+  const fw = [];
+  if (document.getElementById('fw-iso').checked) fw.push('ISO 27001');
+  if (document.getElementById('fw-soc2').checked) fw.push('SOC 2');
+  if (document.getElementById('fw-gdpr').checked) fw.push('GDPR');
+  if (document.getElementById('fw-nist').checked) fw.push('NIST CSF');
+
+  const data = {
+    name, domain: document.getElementById('f-domain').value,
+    desc: document.getElementById('f-desc').value,
+    likelihood: parseInt(document.getElementById('f-likelihood').value),
+    impact: parseInt(document.getElementById('f-impact').value),
+    residualLikelihood: parseInt(document.getElementById('f-res-likelihood').value),
+    residualImpact: parseInt(document.getElementById('f-res-impact').value),
+    owner: document.getElementById('f-owner').value,
+    status: document.getElementById('f-status').value,
+    treatment: document.getElementById('f-treatment').value,
+    frameworks: fw, trend: 'flat', controls: [], history: []
+  };
+
+  if (editingId) {
+    const idx = risks.findIndex(r => r.id === editingId);
+    data.id = editingId;
+    data.controls = risks[idx].controls;
+    data.history = risks[idx].history;
+    data.history.push({ date: new Date().toISOString().slice(0,10), event: 'Risk updated', icon: '✏️' });
+    risks[idx] = data;
+    showToast('✅ Risk updated successfully');
+  } else {
+    const num = String(risks.length + 1).padStart(3, '0');
+    data.id = `RSK-${num}`;
+    data.history = [{ date: new Date().toISOString().slice(0,10), event: 'Risk added to register', icon: '➕' }];
+    risks.push(data);
+    showToast('✅ Risk added to register');
+  }
+  closeModal('add-modal');
+  renderDashboard();
+  if (document.getElementById('tab-register').classList.contains('active')) renderTable();
+}
+
+function deleteRisk(id) {
+  if (!confirm(`Delete ${id}? This cannot be undone.`)) return;
+  risks = risks.filter(r => r.id !== id);
+  renderTable();
+  renderDashboard();
+  showToast('🗑️ Risk deleted');
+}
+
+// ── EXPORT ────────────────────────────────────────────────────────────────
+function exportCSV() {
+  const headers = ['ID','Name','Domain','Likelihood','Impact','Score','Severity','Residual L','Residual I','Residual Score','Status','Owner','Frameworks','Treatment'];
+  const rows = risks.map(r => {
+    const score = r.likelihood * r.impact;
+    return [r.id, `"${r.name}"`, `"${r.domain}"`, r.likelihood, r.impact, score, getSeverity(score),
+      r.residualLikelihood, r.residualImpact, r.residualLikelihood*r.residualImpact,
+      r.status, `"${r.owner}"`, `"${r.frameworks.join(', ')}"`, `"${r.treatment}"`].join(',');
+  });
+  const csv = [headers.join(','), ...rows].join('\n');
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+  a.download = 'enterprise-risk-register.csv';
+  a.click();
+  showToast('⬇️ CSV exported');
+}
+
+// ── UTILS ─────────────────────────────────────────────────────────────────
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// Close modals on overlay click
+document.querySelectorAll('.modal-overlay').forEach(o => {
+  o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); });
+});
+
+// ── INIT ──────────────────────────────────────────────────────────────────
+// Spin animation for loading banner
+const styleEl = document.createElement('style');
+styleEl.textContent = '@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }';
+document.head.appendChild(styleEl);
+
+// Inject topbar controls: Refresh + Connect Sheet buttons
+document.querySelector('.topbar-controls').insertAdjacentHTML('afterbegin', `
+  <button class="btn btn-ghost" onclick="refreshData()" title="Re-fetch from Google Sheets">🔄 Refresh</button>
+  <button class="btn btn-ghost" onclick="openSetupModal(false)" title="Configure Google Sheets connection" style="border-color:rgba(79,142,247,0.4);color:#4f8ef7;">
+    🔗 Sheet Settings
+  </button>
+`);
+
+// Boot sequence
+const savedId = getSavedSheetId();
+
+if (savedId && savedId.length > 10) {
+  // Sheet connected — show loading state, then fetch live data
+  risks = [];
+  dataLoaded = false;
+  renderDashboard();
+  showConnectionStatus(false, 'Connecting to Google Sheets…');
+  loadFromGoogleSheets(savedId).then(ok => {
+    if (!ok) {
+      // Sheet failed — show demo data as fallback
+      risks = getDemoData();
+      dataLoaded = true;
+      renderDashboard();
+      showConnectionStatus(false, 'Could not reach sheet — showing sample data · click to reconnect');
+      showToast('⚠️ Could not connect — showing sample data');
+    }
+  });
+} else {
+  // No sheet connected — show demo data and setup modal
+  risks = getDemoData();
+  dataLoaded = true;
+  renderDashboard();
+  setTimeout(() => openSetupModal(true), 600);
+}
+</script>
+</body>
+</html>
